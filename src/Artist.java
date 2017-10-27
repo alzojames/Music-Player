@@ -1,3 +1,7 @@
+import java.awt.Image;
+import java.util.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 public final class Artist implements Comparable<Artist> {
 
     private String title;
@@ -43,6 +47,7 @@ public final class Artist implements Comparable<Artist> {
      * @return artist image
      */
     public Image getArtistImage() {
+        return null;
         //gets Image of the artist for the gui
     }
 
@@ -51,7 +56,13 @@ public final class Artist implements Comparable<Artist> {
     }
 
     private String removeArticle(String title) {
+        return null;
         //removes "a", "an" and "the" from the name of the artist
         
+    }
+
+    @Override
+    public int compareTo(Artist o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

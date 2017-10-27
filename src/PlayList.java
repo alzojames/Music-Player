@@ -1,12 +1,22 @@
-public class Playlist {
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package musicplayer;
+import java.util.*;
+/**
+ *
+ * @author Japhet
+ */
+public class PlayList {
     private int id;
     private String title;
     private ArrayList<Song> songs;
     
     //Constructor for the Playlist class.
 
-    public Playlist(int id, String title, ArrayList<Song> songs) {
+    public PlayList(int id, String title, ArrayList<Song> songs) {
         this.id = id;
         this.title = title;
         this.songs = songs;

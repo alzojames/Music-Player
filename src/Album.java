@@ -1,3 +1,10 @@
+
+import java.awt.Image;
+import java.util.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import musicplayer.Song;
+
 public final class Album implements Comparable<Album> {
 
     private int id;
@@ -55,6 +62,7 @@ public final class Album implements Comparable<Album> {
     }
 
     public Image getArtwork() {
+        return null;
         
     }
 
@@ -71,6 +79,7 @@ public final class Album implements Comparable<Album> {
     }
 
     private String removeArticle(String title) {
+        return null;
         //removes "a", "an" and "the" from the name of the album
     }
 }

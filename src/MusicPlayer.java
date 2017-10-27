@@ -51,9 +51,8 @@ public class MusicPlayer extends Application {
         play = new PlayPauseWidget();
         borderPane.setBottom(play);
         
-        int numOfTabs = 5;
+        
         Tab tab;
-        String name = "did not work";
         for (int i = 0; i < 5; i++) {
             //Tab tab = new Tab();
             tab = new Tab();
@@ -74,7 +73,7 @@ public class MusicPlayer extends Application {
                         break; 
                 
             }
-            System.out.print(name);
+            
                 
             //hbox.getChildren().add(play);
             //hbox.getChildren().add(play);

@@ -70,6 +70,8 @@ public class PlayPauseWidget extends GridPane{
             @Override
             public void handle(ActionEvent event) {
                 //System.out.println("Hello World!");
+                Library lib = new Library();
+                lib.metaData();
                 Song d = new Song();
                 d.last();
             }
