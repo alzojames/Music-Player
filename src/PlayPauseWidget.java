@@ -13,6 +13,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import com.jfoenix.controls.*;
 import javafx.geometry.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import musicplayer.Song;
 /**
  *
@@ -21,14 +23,15 @@ import musicplayer.Song;
 public class PlayPauseWidget extends GridPane{
     
         
-    JFXButton play = new JFXButton("Play");
+    JFXButton play = new JFXButton("");
     JFXButton pause = new JFXButton("Pause");
-    JFXButton next = new JFXButton("Next");
-    JFXButton last = new JFXButton("Last");
+    JFXButton next = new JFXButton("");
+    JFXButton last = new JFXButton("");
     JFXTextArea currentSongDisplay = new JFXTextArea();
-    Label volume = new Label("Volume");
+    Label volume = new Label("");
     JFXSlider volumeSlider = new JFXSlider();
     JFXSlider scrubThrough = new JFXSlider();
+    Library lib = new Library();
     
     //JFXLabel currentSongDisplay = new JFXLabel("Current song");
     public  PlayPauseWidget(){
@@ -45,10 +48,21 @@ public class PlayPauseWidget extends GridPane{
         GridPane.setHgrow(r, Priority.ALWAYS);
         GridPane.setVgrow(r, Priority.ALWAYS);
         
+        Image lastIcon = new Image(getClass().getResourceAsStream("lastIcon.png"));
+        last.setGraphic(new ImageView(lastIcon));
+        
+        Image playIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
+        play.setGraphic(new ImageView(playIcon));
+        
+        Image nextIcon = new Image(getClass().getResourceAsStream("nextIcon.png"));
+        next.setGraphic(new ImageView(nextIcon));
+        
+        Image volumeIcon = new Image(getClass().getResourceAsStream("volumeIcon.png"));
+        volume.setGraphic(new ImageView(volumeIcon));
         
         add(last,0,2);
         add(play,1,2);
-        add(pause,2,2);
+        //add(pause,2,2);
         add(next,3,2);
         add(region,4,0);
         add(currentSongDisplay, 5,2);
@@ -62,7 +76,8 @@ public class PlayPauseWidget extends GridPane{
         currentSongDisplay.setPrefWidth(250);
         currentSongDisplay.setPrefHeight(50);
         currentSongDisplay.setDisable(true);
-        currentSongDisplay.appendText("Song: I'm here \nArtist: Russ \nAlbum: There's Really A Wolf");
+        currentSongDisplay.appendText("Song: ----- \nArtist: ----- \nAlbum: -----");
+        
         
         
         last.setOnAction(new EventHandler<ActionEvent>() {
@@ -70,8 +85,8 @@ public class PlayPauseWidget extends GridPane{
             @Override
             public void handle(ActionEvent event) {
                 //System.out.println("Hello World!");
-                Library lib = new Library();
-                lib.metaData();
+                
+                lib.getmetaData();
                 Song d = new Song();
                 d.last();
             }
@@ -81,9 +96,8 @@ public class PlayPauseWidget extends GridPane{
             
             @Override
             public void handle(ActionEvent event) {
-                //System.out.println("Hello World!");
-                //Song d = new Song();
-                //d.playMp3();
+                String metaData[] = lib.getmetaData();
+                updatecurrentSongDisplay(metaData[0],metaData[1],metaData[2]);
             }
         });
         
@@ -99,5 +113,9 @@ public class PlayPauseWidget extends GridPane{
 
     }
     
+    public void updatecurrentSongDisplay(String song, String Artist, String Album){
+        currentSongDisplay.clear();
+        currentSongDisplay.appendText("Song: " +  song + "\nArtist: " + Artist + "\nAlbum: " + Album);
+    }
 
 }

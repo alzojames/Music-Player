@@ -41,9 +41,9 @@ public class Library {
     //private static int maxProgress;
 
     
-    public void metaData(){
+    public String[] getmetaData(){
          String fileLocation = "C:\\Users\\ndeme\\Documents\\New folder\\test.mp3";
-
+         String metaData[] = new String[3];
         try {
 
         InputStream input = new FileInputStream(new File(fileLocation));
@@ -65,7 +65,22 @@ public class Library {
         composer = metadata.get("xmpDM:composer");
         genre = metadata.get("xmpDM:genre");
         album = metadata.get("xmpDM:album");
-
+        
+        for(int i = 0; i < metaData.length; i++){
+            
+            switch (i){
+                case 0: metaData[i] = title;
+                        break;
+                case 1: metaData[i] = artist;
+                        break;
+                case 2: metaData[i] = album;
+                        break;
+            }
+        }
+         
+        return metaData;
+        //System.out.println("Title: " + title + "\nArtist: " + artist + "\nComposer: " + composer + "\nGenre: " + genre + "\nAlbum: " +album);
+                
         } catch (FileNotFoundException e) {
         e.printStackTrace();
         } catch (IOException e) {
@@ -76,5 +91,6 @@ public class Library {
         e.printStackTrace();
         }
         
+        return metaData;
     }
 }
