@@ -24,13 +24,14 @@ public class PlayPauseWidget extends GridPane{
     
         
     JFXButton play = new JFXButton("");
-    JFXButton pause = new JFXButton("Pause");
+    JFXButton pause = new JFXButton("");
     JFXButton next = new JFXButton("");
     JFXButton last = new JFXButton("");
     JFXTextArea currentSongDisplay = new JFXTextArea();
     Label volume = new Label("");
     JFXSlider volumeSlider = new JFXSlider();
     JFXSlider scrubThrough = new JFXSlider();
+    
     Library lib = new Library();
     
     //JFXLabel currentSongDisplay = new JFXLabel("Current song");
@@ -50,19 +51,30 @@ public class PlayPauseWidget extends GridPane{
         
         Image lastIcon = new Image(getClass().getResourceAsStream("lastIcon.png"));
         last.setGraphic(new ImageView(lastIcon));
+        ImageView lastView = new ImageView(lastIcon);
+        lastView.setFitWidth(5);
+        lastView.setFitHeight(5);
         
         Image playIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
         play.setGraphic(new ImageView(playIcon));
+        ImageView playView = new ImageView(lastIcon);
+        playView.setFitWidth(5);
+        playView.setFitHeight(5);
         
         Image nextIcon = new Image(getClass().getResourceAsStream("nextIcon.png"));
         next.setGraphic(new ImageView(nextIcon));
+        ImageView nextView = new ImageView(lastIcon);
+        nextView.setFitWidth(5);
+        nextView.setFitHeight(5);
         
         Image volumeIcon = new Image(getClass().getResourceAsStream("volumeIcon.png"));
         volume.setGraphic(new ImageView(volumeIcon));
+        ImageView volumeView = new ImageView(lastIcon);
+        volumeView.setFitWidth(5);
+        volumeView.setFitHeight(5);
         
         add(last,0,2);
         add(play,1,2);
-        //add(pause,2,2);
         add(next,3,2);
         add(region,4,0);
         add(currentSongDisplay, 5,2);
@@ -96,6 +108,29 @@ public class PlayPauseWidget extends GridPane{
             
             @Override
             public void handle(ActionEvent event) {
+                getChildren().remove(play);
+                Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
+                pause.setGraphic(new ImageView(lastIcon));
+                ImageView pauseView = new ImageView(lastIcon);
+                pauseView.setFitWidth(5);
+                pauseView.setFitHeight(5);
+                add(pause,1,2);
+                String metaData[] = lib.getmetaData();
+                updatecurrentSongDisplay(metaData[0],metaData[1],metaData[2]);
+            }
+        });
+        
+        pause.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                getChildren().remove(pause);
+                Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
+                play.setGraphic(new ImageView(lastIcon));
+                ImageView playView = new ImageView(lastIcon);
+                playView.setFitWidth(5);
+                playView.setFitHeight(5);
+                add(play,1,2);
                 String metaData[] = lib.getmetaData();
                 updatecurrentSongDisplay(metaData[0],metaData[1],metaData[2]);
             }

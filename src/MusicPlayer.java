@@ -22,19 +22,7 @@ import static javafx.scene.layout.GridPane.setHgrow;
  */
 public class MusicPlayer extends Application {
     
-    
-    /*
-    Scene scene;
-    @Override
-	public void start(Stage primaryStage){
-		PlayPauseWidget bw  = new PlayPauseWidget();
-		//SongSlider bw =new SongSlider();
-		primaryStage.setTitle("Elysium");
-		
-		primaryStage.setScene(new Scene(bw, 800, 600));
-		primaryStage.show();
-	}
-    */
+
     private PlayPauseWidget play;
     public void start(Stage primaryStage) {
         
@@ -54,14 +42,14 @@ public class MusicPlayer extends Application {
         
         Tab tab;
         for (int i = 0; i < 5; i++) {
-            //Tab tab = new Tab();
+            
             tab = new Tab();
             tab.setText(tabName[i]);
             HBox hbox = new HBox();
             
             //Call the Playlist Artist... Widget classes
             switch (i){
-                case 0: tab.setContent(new PlayPauseWidget());
+                case 0: tab.setContent(new AlbumArt());
                         break;
                 case 1: tab.setContent(new PlayPauseWidget());
                         break;
@@ -73,19 +61,12 @@ public class MusicPlayer extends Application {
                         break; 
                 
             }
-            
-                
-            //hbox.getChildren().add(play);
-            //hbox.getChildren().add(play);
-            
+
             hbox.setAlignment(Pos.CENTER);
-            //tab.setContent(hbox);
             tabPane.getTabs().add(tab);
         }
         
-        //HBox hbox = new HBox();    
-        //hbox.getChildren().add(play);
-        // bind to take available space
+
         borderPane.prefHeightProperty().bind(scene.heightProperty());
         borderPane.prefWidthProperty().bind(scene.widthProperty());
         
@@ -94,16 +75,6 @@ public class MusicPlayer extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        /*
-        Holder transcoder = new Holder();
-
-        
-        Scene scene = new Scene(transcoder, 800, 600);
-        
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        */
     }
 
     /**

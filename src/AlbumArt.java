@@ -24,6 +24,8 @@ public class AlbumArt extends GridPane{
     
 
     int numOfAlbums = 0;
+    
+    //Pass getArtwork to set the artwork
     public AlbumArt() {
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
@@ -54,9 +56,7 @@ public class AlbumArt extends GridPane{
         //add(artistLabel,0,2);
     }
 
-    public void addAlbumArt(){
-        
-    }
+  
     
 
 }
