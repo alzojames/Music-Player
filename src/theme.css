@@ -1,0 +1,12 @@
+.root{
+    -fx-background-color: #181818;
+}
+
+.button-raised{
+    -fx-padding: 0.7;
+    -fx-font-size: 14px;
+    -jfx-button-type: RAISED;
+    -fx-background-color: #181818;
+    -fx-pref-width: 200;
+    -fx-text-fill: WHITE;
+}

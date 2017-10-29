@@ -41,6 +41,10 @@ public class Library {
     //private static int maxProgress;
 
     
+    /*
+    This method uses the Apche Tika library to get the metadata from the files and
+    store them in the fields
+    */
     public String[] getmetaData(){
          String fileLocation = "C:\\Users\\ndeme\\Documents\\New folder\\test.mp3";
          String metaData[] = new String[3];

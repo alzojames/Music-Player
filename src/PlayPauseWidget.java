@@ -41,6 +41,7 @@ public class PlayPauseWidget extends GridPane{
         setVgap(10);
         setHgap(10);
            
+        //region will be used to make the GUI more reponsive
         Region region = new Region();
         GridPane.setHgrow(region, Priority.ALWAYS);
         GridPane.setVgrow(region, Priority.ALWAYS);
@@ -49,6 +50,11 @@ public class PlayPauseWidget extends GridPane{
         GridPane.setHgrow(r, Priority.ALWAYS);
         GridPane.setVgrow(r, Priority.ALWAYS);
         
+        /*
+        put image on the icons on the buttons to make the GUI
+        icon image files must be in the same directory as this class file,
+        or specifiy the loction on the drive where the files can be found 
+        */
         Image lastIcon = new Image(getClass().getResourceAsStream("lastIcon.png"));
         last.setGraphic(new ImageView(lastIcon));
         ImageView lastView = new ImageView(lastIcon);
@@ -73,6 +79,9 @@ public class PlayPauseWidget extends GridPane{
         volumeView.setFitWidth(5);
         volumeView.setFitHeight(5);
         
+        /*
+        Add the elements on to the gridPane 
+        */
         add(last,0,2);
         add(play,1,2);
         add(next,3,2);
@@ -85,13 +94,17 @@ public class PlayPauseWidget extends GridPane{
         
         scrubThrough.setMaxWidth(Double.MAX_VALUE);
         setHgrow(scrubThrough, Priority.ALWAYS);
+        
         currentSongDisplay.setPrefWidth(250);
         currentSongDisplay.setPrefHeight(50);
         currentSongDisplay.setDisable(true);
         currentSongDisplay.appendText("Song: ----- \nArtist: ----- \nAlbum: -----");
         
         
-        
+        /*
+        This event handler will play the previous track
+        As of now it's being used to test if the getmetaData method works
+        */
         last.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
@@ -104,6 +117,11 @@ public class PlayPauseWidget extends GridPane{
             }
         });
                 
+        /*
+        This event handler will remove the icon of the play buttun and replave it with the pause button.
+        It will then play the currently selected song
+        And update the currently playing song on the display
+        */
         play.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
@@ -120,6 +138,10 @@ public class PlayPauseWidget extends GridPane{
             }
         });
         
+        /*
+        This event handler will remove the icon of the pause icon/buttun and replave it with the play icon/button.
+        It will then pause the currently selected song
+        */
         pause.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
@@ -136,6 +158,10 @@ public class PlayPauseWidget extends GridPane{
             }
         });
         
+        /*
+        This event handler will play the previous track
+        As of now it's being used to test if the getmetaData method works
+        */
         next.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
@@ -148,6 +174,7 @@ public class PlayPauseWidget extends GridPane{
 
     }
     
+    //This updates the info about the currrntly playing song
     public void updatecurrentSongDisplay(String song, String Artist, String Album){
         currentSongDisplay.clear();
         currentSongDisplay.appendText("Song: " +  song + "\nArtist: " + Artist + "\nAlbum: " + Album);
