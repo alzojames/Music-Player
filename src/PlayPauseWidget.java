@@ -112,6 +112,8 @@ public class PlayPauseWidget extends GridPane{
         add(volumeSlider,8,2);
         //add(importFiles,9,2);
         
+        volumeSlider.setMin(0);
+        volumeSlider.setMax(1);
         scrubThrough.setMaxWidth(Double.MAX_VALUE);
         setHgrow(scrubThrough, Priority.ALWAYS);
         

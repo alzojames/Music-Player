@@ -1,11 +1,13 @@
+package musicplayer;
 import java.awt.Image;
 import java.util.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import musicplayer.Album;
 public final class Artist implements Comparable<Artist> {
 
     private String title;
-    private ArrayList<Album> albums;
+    //HashSet<Album> albums = new HashSet<Albums>();
     private Image artistImage;
     private SimpleObjectProperty<Image> artistImageProperty;
 
@@ -16,9 +18,8 @@ public final class Artist implements Comparable<Artist> {
      * @param title Artist name
      * @param albums List of artist albums
      */
-    public Artist(String title, ArrayList<Album> albums) {
+    public Artist(String title) {
         this.title = title;
-        this.albums = albums;
         this.artistImageProperty = new SimpleObjectProperty<>(getArtistImage());
     }
 
@@ -34,9 +35,9 @@ public final class Artist implements Comparable<Artist> {
      * Gets array list of artist albums
      * @return artist albums
      */
-    public ArrayList<Album> getAlbums() {
-        return new ArrayList<>(this.albums);
-    }
+    //public ArrayList<Album> getAlbums() {
+      //  return new ArrayList<>(this.albums);
+    //}
 
     public ObjectProperty<Image> artistImageProperty() {
         return this.artistImageProperty;

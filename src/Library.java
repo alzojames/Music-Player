@@ -11,7 +11,7 @@ package musicplayer;
  * @author Japhet
  */
 import java.io.*;
-import java.util.*;
+
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -20,6 +20,8 @@ import org.apache.tika.parser.mp3.Mp3Parser;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import java.util.*;
+import musicplayer.Album;
 public class Library {
     private static  String ID = "id";
     private static  String title = "title";
@@ -35,8 +37,9 @@ public class Library {
     
 
     static ArrayList<Song> songs = new ArrayList<Song>();
-    //private static ArrayList<Artist> artists;
-    //static HashMap<String,Album> albums =new HashMap<String,Album>();
+    static HashMap<String,Artist> artists = new HashMap<String,Artist>();
+    static HashMap<String,Album> albums = new HashMap<String,Album>();
+    //HashMap<String,Album> al;
     //private static ArrayList<Playlist> playlists;
     //private static int maxProgress;
 

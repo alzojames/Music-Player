@@ -55,6 +55,7 @@ public class MusicPlayer extends Application {
         double height;
         MediaView mediaView;
         
+        
         String path = "C:\\Users\\jndemera2\\Documents\\NetBeansProjects\\MusicPlayer\\src\\musicplayer\\test.mp3";
 
         media = new Media(new File(path).toURI().toString());
@@ -63,6 +64,7 @@ public class MusicPlayer extends Application {
         //AutoPlay set to false
         mediaPlayer.setAutoPlay(false);
         mediaView = new MediaView(mediaPlayer);
+       // mediaPlayer.setVolume(playPause.volumeSlider.getValue());
         
         primaryStage.setTitle("Tabs");
         Group root = new Group();
@@ -148,30 +150,8 @@ public class MusicPlayer extends Application {
                             }catch(NullPointerException haha){
                                 System.out.print("Error!!!");
                             }
-//                            if (Library.albums.containsKey(song.getAlbum())){
-//                                
-//                                Library.albums.put(song.getAlbum(),"yes");
-//                                Album album = new Album(song.getAlbum(), song.getArtist());
-//                                album.addSongs(song);
-//                            }else{
-//                               // album.addSongs(song);
-//                            }
-//                            Album album;
-//                            if (albums.containsKey(song.getAlbum())){
-                                
-//                                Library.albums.put(song.getAlbum(),"yes");
-//                                Album album = new Album(song.getAlbum(), song.getArtist());
-//                                    albums.get();
-//                                String str = song.getAlbum();
-//                                Album album; 
-//                                albums.get();
-//                                albums.get(album);
-//                                album.addSongs(song);
-//                            }else{
-//                                Album album = new Album(song.getAlbum(), song.getArtist());
-//                               albums.put(song.getAlbum(),album); 
-//                               album.addSongs(song);
-//                            }
+                            
+                            addSongToAlbum(song);
                             
                         }
                     }
@@ -201,7 +181,7 @@ public class MusicPlayer extends Application {
                     
         });
         
-                playPause.play.setOnAction(new EventHandler<ActionEvent>(){
+        playPause.play.setOnAction(new EventHandler<ActionEvent>(){
                 @Override
                 public void handle(ActionEvent arg0) {
                     playPause.getChildren().remove(playPause.play);
@@ -217,6 +197,7 @@ public class MusicPlayer extends Application {
                 }
                     
         });
+       
         
         /*
         This event handler will remove the icon of the pause icon/buttun and replave it with the play icon/button.
@@ -260,15 +241,38 @@ public class MusicPlayer extends Application {
         primaryStage.show();
         
     }
-    
-
-    
-    
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
-    }   
+    }
+    
+    public void addSongToAlbum(Song song){
+        if (Library.albums.containsKey(song.getAlbum())){
+                                
+            Library.albums.get(song.getAlbum()).addSongs(song);
+            //Album a = Library.albums.get.(song.getAlbum());
+            //System.out.println(album.getTitle());
+            }else{
+                Album album = new Album(song.getAlbum(), song.getArtist());
+                Library.albums.put(song.getAlbum(),album); 
+                album.addSongs(song);
+                System.out.println(album.getTitle());
+            }
+    }
+//    public void addSongToArtist(Song song){
+//        if (Library.artists.containsKey(song.getArtist())){
+//                                
+//            Library.albums.get(song.getAlbum()).addSongs(song);
+//            //Album a = Library.albums.get.(song.getAlbum());
+//            //System.out.println(album.getTitle());
+//            }else{
+//                Artist album = new Artist(song.getAlbum().song.getArtist());
+//                Library.artists.put(song.getAlbum(),album); 
+//                Artist.addSongs(song);
+//                System.out.println(album.getTitle());
+//            }
+//    }
 }

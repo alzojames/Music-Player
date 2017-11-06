@@ -1,4 +1,4 @@
-
+package musicplayer;
 import java.awt.Image;
 import java.util.*;
 import javafx.beans.property.ObjectProperty;
@@ -11,7 +11,7 @@ public final class Album implements Comparable<Album> {
     private String title;
     private String artist;
     private Image artwork;
-    private HashSet<Song> songs;
+    private HashSet<Song> songs = new HashSet<Song>();
     private SimpleObjectProperty<Image> artworkProperty;
 
     /**
