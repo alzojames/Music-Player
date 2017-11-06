@@ -34,9 +34,9 @@ public class Library {
     private static  String genre = "location"; 
     
 
-    //private static ArrayList<Song> songs;
+    static ArrayList<Song> songs = new ArrayList<Song>();
     //private static ArrayList<Artist> artists;
-    //private static ArrayList<Album> albums;
+    //static HashMap<String,Album> albums =new HashMap<String,Album>();
     //private static ArrayList<Playlist> playlists;
     //private static int maxProgress;
 
@@ -45,8 +45,8 @@ public class Library {
     This method uses the Apche Tika library to get the metadata from the files and
     store them in the fields
     */
-    public String[] getmetaData(){
-         String fileLocation = "C:\\Users\\ndeme\\Documents\\New folder\\test.mp3";
+    public String[] getmetaData(String fileLocation){
+         //String fileLocation = "C:\\Users\\ndeme\\Documents\\New folder\\test.mp3";
          String metaData[] = new String[3];
         try {
 
@@ -96,5 +96,9 @@ public class Library {
         }
         
         return metaData;
+    }
+    
+    public static void addSong(Song song){
+       songs.add(song); 
     }
 }

@@ -11,7 +11,7 @@ public final class Album implements Comparable<Album> {
     private String title;
     private String artist;
     private Image artwork;
-    private ArrayList<Song> songs;
+    private HashSet<Song> songs;
     private SimpleObjectProperty<Image> artworkProperty;
 
     /**
@@ -23,8 +23,8 @@ public final class Album implements Comparable<Album> {
      * @param artist
      * @param songs
      */
-    public Album(int id, String title, String artist, ArrayList<Song> songs) {
-        this.id = id;
+    public Album(String title, String artist) {
+        //this.id = id;
         this.title = title;
         this.artist = artist;
         this.songs = songs;
@@ -40,6 +40,9 @@ public final class Album implements Comparable<Album> {
         return this.id;
     }
 
+    public void test(){
+        System.out.print("apples" + this.getArtist());
+    }
     /**
      * Gets album title
      *
@@ -68,6 +71,10 @@ public final class Album implements Comparable<Album> {
 
     public void downloadArtwork() {
         
+    }
+    
+    public void addSongs(Song song){
+        songs.add(song);
     }
 
     @Override

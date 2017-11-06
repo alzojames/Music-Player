@@ -12,14 +12,20 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import com.jfoenix.controls.*;
+import java.io.File;
 import javafx.geometry.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import musicplayer.Song;
+
 /**
  *
  * @author jndemera2
  */
+
 public class PlayPauseWidget extends GridPane{
     
         
@@ -31,9 +37,21 @@ public class PlayPauseWidget extends GridPane{
     Label volume = new Label("");
     JFXSlider volumeSlider = new JFXSlider();
     JFXSlider scrubThrough = new JFXSlider();
+    JFXButton importFiles = new JFXButton("Import");
     
     Library lib = new Library();
     
+
+    
+            MediaPlayer mediaPlayer;
+    //private Label time;
+    //Duration duration;
+    //Button fullScreenButton;
+    //Scene scene;
+    Media media;
+    double width;
+    double height;
+    MediaView mediaView;
     //JFXLabel currentSongDisplay = new JFXLabel("Current song");
     public  PlayPauseWidget(){
         
@@ -86,11 +104,13 @@ public class PlayPauseWidget extends GridPane{
         add(play,1,2);
         add(next,3,2);
         add(region,4,0);
+        add(importFiles,4,2);
         add(currentSongDisplay, 5,2);
         add(scrubThrough,5,1);
         add(r,6,0);
         add(volume,7,2);
         add(volumeSlider,8,2);
+        //add(importFiles,9,2);
         
         scrubThrough.setMaxWidth(Double.MAX_VALUE);
         setHgrow(scrubThrough, Priority.ALWAYS);
@@ -111,17 +131,13 @@ public class PlayPauseWidget extends GridPane{
             public void handle(ActionEvent event) {
                 //System.out.println("Hello World!");
                 
-                lib.getmetaData();
-                Song d = new Song();
-                d.last();
+                //lib.getmetaData();
+                //Song d = new Song();
+                //d.last();
             }
         });
                 
-        /*
-        This event handler will remove the icon of the play buttun and replave it with the pause button.
-        It will then play the currently selected song
-        And update the currently playing song on the display
-        */
+
         play.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
@@ -133,30 +149,16 @@ public class PlayPauseWidget extends GridPane{
                 pauseView.setFitWidth(5);
                 pauseView.setFitHeight(5);
                 add(pause,1,2);
-                String metaData[] = lib.getmetaData();
-                updatecurrentSongDisplay(metaData[0],metaData[1],metaData[2]);
+                
+                //MusicPlayer.play();
+                
+                
+//                String metaData[] = lib.getmetaData("");
+//                updatecurrentSongDisplay(metaData[0],metaData[1],metaData[2]);
             }
         });
         
-        /*
-        This event handler will remove the icon of the pause icon/buttun and replave it with the play icon/button.
-        It will then pause the currently selected song
-        */
-        pause.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                getChildren().remove(pause);
-                Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
-                play.setGraphic(new ImageView(lastIcon));
-                ImageView playView = new ImageView(lastIcon);
-                playView.setFitWidth(5);
-                playView.setFitHeight(5);
-                add(play,1,2);
-                String metaData[] = lib.getmetaData();
-                updatecurrentSongDisplay(metaData[0],metaData[1],metaData[2]);
-            }
-        });
+
         
         /*
         This event handler will play the previous track
@@ -166,12 +168,9 @@ public class PlayPauseWidget extends GridPane{
             
             @Override
             public void handle(ActionEvent event) {
-                //System.out.println("Hello World!");
-                Song d = new Song();
-                d.next();
+                System.out.print("Working");
             }
         });
-
     }
     
     //This updates the info about the currrntly playing song
