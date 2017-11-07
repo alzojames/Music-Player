@@ -103,6 +103,16 @@ public class MusicPlayer extends Application {
             }
         });
         
+        playPause.timeSlider.valueProperty().addListener(new InvalidationListener() {
+            public void invalidated(Observable ov) {
+                if (playPause.timeSlider.isValueChanging()) {
+                    // multiply duration by percentage calculated by slider position
+                    //mediaPlayer.seek(duration.multipliedBy((long) (playPause.timeSlider.getValue() / 100.0)));
+                    //mediaPlayer.seek(duration.multipliedBy(0));
+                }
+            }
+        });
+        
         playPause.importFiles.setOnAction(new EventHandler<ActionEvent>(){
                 @Override
                 public void handle(ActionEvent arg0) {
@@ -228,6 +238,8 @@ public class MusicPlayer extends Application {
         launch(args);
     }
     
+    
+    
     public static void setPath(String filelocation){
         path = filelocation;
         media = new Media(new File(path).toURI().toString());
@@ -269,4 +281,29 @@ public class MusicPlayer extends Application {
         mediaPlayer.setAutoPlay(false);
         mediaView = new MediaView(mediaPlayer);
     }
+/*
+    protected void updateValues() {
+    if (playTime != null && playPause.timeSlider != null && playPause.volumeSlider != null && duration != null) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Duration currentTime = mediaPlayer.getCurrentTime();
+                playTime.setText(formatTime(currentTime, duration));
+                playPause.timeSlider.setDisable(duration.isUnknown());
+                if (!playPause.timeSlider.isDisabled() && duration.greaterThan(Duration.ZERO) && !playPause.timeSlider.isValueChanging()) {
+                    playPause.timeSlider.setValue(currentTime.divide(duration).toMillis() * 100.0);
+                    playPause.timeSlider.setValue(currentTime.dividedBy((long)duration).toMillis()*100);
+                }
+                if (!playPause.volumeSlider.isValueChanging()) {
+                    playPause.volumeSlider.setValue((int) Math.round(mediaPlayer.getVolume() * 100));
+                }
+            }
+        });
+    }
+
+}
+*/
+
+
+
 }

@@ -32,21 +32,26 @@ public class SongWidget extends GridPane{
     
     int count = 1;
     private HashMap<Song, String> pickSong = new HashMap<Song, String>();
-    JFXButton songLabel;
+    JFXButton songTitle;
+    JFXButton artist;
+    JFXButton album;
     
     public SongWidget(){
+        setPadding(new Insets (10,10,10,10));
+        setVgap(10);
+        setHgap(10);
         Label label = new Label("Title \t Artist \t Album");
         add(label,0,0);
         
     }  
     
     public void addSong(Song song){
-        songLabel = new JFXButton(song.getTitle() + "\t " + song.getArtist() + "\t " + song.getAlbum());
-        add(songLabel,0,count);
+        songTitle = new JFXButton(song.getTitle() + "\t " + song.getArtist() + "\t " + song.getAlbum());
+        add(songTitle,0,count);
         pickSong.put(song,song.getId());
         count++;
         
-        songLabel.setOnAction(new EventHandler<ActionEvent>(){
+        songTitle.setOnAction(new EventHandler<ActionEvent>(){
                 @Override
                 public void handle(ActionEvent arg0) {
                     try{
@@ -72,6 +77,7 @@ public class SongWidget extends GridPane{
                     }
                     MusicPlayer.selectSong(song.getId());
                     System.out.println(song.getTitle() + "is playing");
+                    MusicPlayer.mediaPlayer.play();
                 }
                     
         });

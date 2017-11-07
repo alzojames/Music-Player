@@ -36,14 +36,14 @@ public class PlayPauseWidget extends GridPane{
     JFXTextArea currentSongDisplay = new JFXTextArea();
     Label volume = new Label("");
     JFXSlider volumeSlider = new JFXSlider();
-    JFXSlider scrubThrough = new JFXSlider();
+    JFXSlider timeSlider = new JFXSlider();
     JFXButton importFiles = new JFXButton("Import");
     
     Library lib = new Library();
     
 
     
-            MediaPlayer mediaPlayer;
+    MediaPlayer mediaPlayer;
     //private Label time;
     //Duration duration;
     //Button fullScreenButton;
@@ -106,15 +106,15 @@ public class PlayPauseWidget extends GridPane{
         add(region,4,0);
         add(importFiles,4,2);
         add(currentSongDisplay, 5,2);
-        add(scrubThrough,5,1);
+        add(timeSlider,5,1);
         add(r,6,0);
         add(volume,7,2);
         add(volumeSlider,8,2);
         //add(importFiles,9,2);
         
 
-        scrubThrough.setMaxWidth(Double.MAX_VALUE);
-        setHgrow(scrubThrough, Priority.ALWAYS);
+        timeSlider.setMaxWidth(Double.MAX_VALUE);
+        setHgrow(timeSlider, Priority.ALWAYS);
         
         currentSongDisplay.setPrefWidth(250);
         currentSongDisplay.setPrefHeight(50);
