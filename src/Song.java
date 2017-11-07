@@ -102,6 +102,9 @@ public class Song {
         return album;
     }
     
+    public String getId(){
+        return id;
+    }
     public void setTitle(String Title){
         this.title =  Title;
     }

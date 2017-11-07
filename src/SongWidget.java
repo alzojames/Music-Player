@@ -1,8 +1,22 @@
 package musicplayer;
-
-
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import com.jfoenix.controls.*;
+import java.io.File;
+import javafx.geometry.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import java.util.*;
+import static musicplayer.MusicPlayer.playPause;
+import musicplayer.Song;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,11 +31,54 @@ import javafx.scene.layout.GridPane;
 public class SongWidget extends GridPane{
     
     int count = 1;
+    private HashMap<Song, String> pickSong = new HashMap<Song, String>();
+    JFXButton songLabel;
+    
     public SongWidget(){
+        Label label = new Label("Title \t Artist \t Album");
+        add(label,0,0);
         
     }  
+    
     public void addSong(Song song){
-      //  Label label = new Label(song.getTitle() + song.getArtist() + song.getAlbum());
-        //add(label,0,count);
+        songLabel = new JFXButton(song.getTitle() + "\t " + song.getArtist() + "\t " + song.getAlbum());
+        add(songLabel,0,count);
+        pickSong.put(song,song.getId());
+        count++;
+        
+        songLabel.setOnAction(new EventHandler<ActionEvent>(){
+                @Override
+                public void handle(ActionEvent arg0) {
+                    try{
+                    MusicPlayer.playPause.pause.setOnAction(new EventHandler<ActionEvent>(){
+                        @Override
+                        public void handle(ActionEvent arg0) {
+                            System.out.print("Pause");
+                            playPause.getChildren().remove(playPause.pause);
+                            Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
+                            playPause.play.setGraphic(new ImageView(lastIcon));
+                            ImageView pauseView = new ImageView(lastIcon);
+                            pauseView.setFitWidth(5);
+                            pauseView.setFitHeight(5);
+                            playPause.add(playPause.play,1,2);
+
+                            MusicPlayer.mediaPlayer.pause();
+                            System.out.print("Pause!!!!!!");
+                        }
+
+                    });
+                    }catch(NullPointerException e){
+                        
+                    }
+                    MusicPlayer.selectSong(song.getId());
+                    System.out.println(song.getTitle() + "is playing");
+                }
+                    
+        });
     }
+    
+            
+
+    
+    
 }

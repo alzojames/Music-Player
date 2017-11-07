@@ -16,6 +16,8 @@ import java.io.File;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,40 +34,25 @@ import javafx.stage.FileChooser;
  */
 public class MusicPlayer extends Application {
         
-   // static HashMap<String,Album> albums =new HashMap<String,Album>();
-    MediaPlayer mediaPlayer;
-    //private Label time;
-    //Duration duration;
+   
+    static MediaPlayer mediaPlayer;
+    private Label time;
+    Duration duration;
     //Button fullScreenButton;
     //Scene scene;
-    Media media;
+    static Media media;
     double width;
     double height;
-    MediaView mediaView;
-
-    private PlayPauseWidget playPause;
+    static MediaView mediaView;
+    static String path;
+    static PlayPauseWidget playPause;
+    SongWidget songWidget;
+    
     public void start(Stage primaryStage) {
-        MediaPlayer mediaPlayer;
-        //private Label time;
-        Duration duration;
-        Button fullScreenButton;
-        //Scene scene;
-        Media media;
-        double width;
-        double height;
-        MediaView mediaView;
-        
-        
-        String path = "C:\\Users\\jndemera2\\Documents\\NetBeansProjects\\MusicPlayer\\src\\musicplayer\\test.mp3";
 
-        media = new Media(new File(path).toURI().toString());
-
-        mediaPlayer = new MediaPlayer(media);
-        //AutoPlay set to false
-        mediaPlayer.setAutoPlay(false);
-        mediaView = new MediaView(mediaPlayer);
-       // mediaPlayer.setVolume(playPause.volumeSlider.getValue());
         
+
+
         primaryStage.setTitle("Tabs");
         Group root = new Group();
         Scene scene = new Scene(root, 1000, 600);
@@ -95,7 +82,7 @@ public class MusicPlayer extends Application {
                         break;
                 case 2: tab.setContent(new PlayPauseWidget());
                         break;
-                case 3: tab.setContent(new SongWidget());
+                case 3: tab.setContent(songWidget = new SongWidget());
                         break;
                 case 4: tab.setContent(new PlayPauseWidget());
                         break; 
@@ -108,6 +95,14 @@ public class MusicPlayer extends Application {
         }
         
 
+        playPause.volumeSlider.valueProperty().addListener(new InvalidationListener(){
+            public void invalidated(Observable ov) {
+                if (playPause.volumeSlider.isValueChanging()) {
+                    mediaPlayer.setVolume(playPause.volumeSlider.getValue() / 100.0);
+                }
+            }
+        });
+        
         playPause.importFiles.setOnAction(new EventHandler<ActionEvent>(){
                 @Override
                 public void handle(ActionEvent arg0) {
@@ -115,26 +110,7 @@ public class MusicPlayer extends Application {
                     //fileChooser.setMultiSelectionEnabled(true);
                     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("mp3 files (*.mp3)", "*.mp3");
                     fileChooser.getExtensionFilters().add(extFilter);
-/*
-                    File file = fileChooser.showOpenDialog(primaryStage);
-                    
-                    
-                    if(file != null){
-                        String fileString = file.toString();
 
-                        fileString = fileString.replace("\\", "\\\\");
-                    
-                        Song song = new Song(fileString);
-                        
-                        try{
-                            Library.addSong(song);
-                        }catch(NullPointerException haha){
-                            System.out.print("Error!!!");
-                        }
-                        
-                        
-                        System.out.println(file);
-*/
 
                      List<File> list =
                         fileChooser.showOpenMultipleDialog(primaryStage);
@@ -150,7 +126,7 @@ public class MusicPlayer extends Application {
                             }catch(NullPointerException haha){
                                 System.out.print("Error!!!");
                             }
-                            
+                            songWidget.addSong(song);
                             addSongToAlbum(song);
                             
                         }
@@ -181,22 +157,25 @@ public class MusicPlayer extends Application {
                     
         });
         
-        playPause.play.setOnAction(new EventHandler<ActionEvent>(){
+        playPause.pause.setOnAction(new EventHandler<ActionEvent>(){
                 @Override
                 public void handle(ActionEvent arg0) {
-                    playPause.getChildren().remove(playPause.play);
-                    Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
-                    playPause.pause.setGraphic(new ImageView(lastIcon));
+                    System.out.print("Pause");
+                    playPause.getChildren().remove(playPause.pause);
+                    Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
+                    playPause.play.setGraphic(new ImageView(lastIcon));
                     ImageView pauseView = new ImageView(lastIcon);
                     pauseView.setFitWidth(5);
                     pauseView.setFitHeight(5);
-                    playPause.add(playPause.pause,1,2);
+                    playPause.add(playPause.play,1,2);
                     
-                    mediaPlayer.play();
-                    
+                    mediaPlayer.pause();
+                    System.out.print("Pause!!!!!!");
                 }
                     
         });
+        
+
        
         
         /*
@@ -249,6 +228,12 @@ public class MusicPlayer extends Application {
         launch(args);
     }
     
+    public static void setPath(String filelocation){
+        path = filelocation;
+        media = new Media(new File(path).toURI().toString());
+        System.out.print("New song playing");
+    }
+    
     public void addSongToAlbum(Song song){
         if (Library.albums.containsKey(song.getAlbum())){
                                 
@@ -275,4 +260,13 @@ public class MusicPlayer extends Application {
 //                System.out.println(album.getTitle());
 //            }
 //    }
+    
+    public static void selectSong(String path){
+        media = new Media(new File(path).toURI().toString());
+
+        mediaPlayer = new MediaPlayer(media);
+        //AutoPlay set to false
+        mediaPlayer.setAutoPlay(false);
+        mediaView = new MediaView(mediaPlayer);
+    }
 }
