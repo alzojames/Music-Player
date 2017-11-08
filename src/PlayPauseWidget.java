@@ -20,6 +20,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import musicplayer.Song;
+import javafx.util.*;
+
 
 /**
  *
@@ -34,7 +36,7 @@ public class PlayPauseWidget extends GridPane{
     JFXButton next = new JFXButton("");
     JFXButton last = new JFXButton("");
     JFXTextArea currentSongDisplay = new JFXTextArea();
-    Label volume = new Label("");
+    JFXButton volume = new JFXButton("");
     JFXSlider volumeSlider = new JFXSlider();
     JFXSlider timeSlider = new JFXSlider();
     JFXButton importFiles = new JFXButton("Import");
@@ -45,7 +47,7 @@ public class PlayPauseWidget extends GridPane{
     
     MediaPlayer mediaPlayer;
     //private Label time;
-    //Duration duration;
+    Duration duration;
     //Button fullScreenButton;
     //Scene scene;
     Media media;

@@ -34,7 +34,7 @@ import javafx.stage.FileChooser;
  */
 public class MusicPlayer extends Application {
         
-   
+   private static final double minChange = 0.5;
     static MediaPlayer mediaPlayer;
     private Label time;
     Duration duration;
@@ -45,13 +45,14 @@ public class MusicPlayer extends Application {
     double height;
     static MediaView mediaView;
     static String path;
+    
     static PlayPauseWidget playPause;
     SongWidget songWidget;
+    AlbumArt albumArt;
+    PlayListWidget playList = new PlayListWidget();
+    ArtistWidget artistWidget;
     
     public void start(Stage primaryStage) {
-
-        
-
 
         primaryStage.setTitle("Tabs");
         Group root = new Group();
@@ -66,7 +67,6 @@ public class MusicPlayer extends Application {
         playPause = new PlayPauseWidget();
         borderPane.setBottom(playPause);
         
-        
         Tab tab;
         for (int i = 0; i < 5; i++) {
             
@@ -76,9 +76,9 @@ public class MusicPlayer extends Application {
             
             //Call the Playlist Artist... Widget classes
             switch (i){
-                case 0: tab.setContent(new AlbumArt());
+                case 0: tab.setContent(albumArt = new AlbumArt());
                         break;
-                case 1: tab.setContent(new PlayPauseWidget());
+                case 1: tab.setContent(artistWidget = new ArtistWidget());
                         break;
                 case 2: tab.setContent(new PlayPauseWidget());
                         break;
@@ -94,10 +94,20 @@ public class MusicPlayer extends Application {
             tabPane.getTabs().add(tab);
         }
         
-
+        playPause.timeSlider.valueProperty().addListener((obs, oldValue, newValue)->{
+            if(!playPause.timeSlider.isValueChanging()) {
+            double currentTime = mediaPlayer.getCurrentTime().toSeconds();
+            if(Math.abs(currentTime - newValue.doubleValue())> minChange) {
+                mediaPlayer.seek(playPause.duration.multiply((long) newValue.doubleValue()));
+                //mediaPlayer.see
+            }
+            }
+        });
+        
         playPause.volumeSlider.valueProperty().addListener(new InvalidationListener(){
             public void invalidated(Observable ov) {
                 if (playPause.volumeSlider.isValueChanging()) {
+                    mediaPlayer.setMute(false);
                     mediaPlayer.setVolume(playPause.volumeSlider.getValue() / 100.0);
                 }
             }
@@ -121,7 +131,6 @@ public class MusicPlayer extends Application {
                     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("mp3 files (*.mp3)", "*.mp3");
                     fileChooser.getExtensionFilters().add(extFilter);
 
-
                      List<File> list =
                         fileChooser.showOpenMultipleDialog(primaryStage);
                      Song song;
@@ -138,7 +147,6 @@ public class MusicPlayer extends Application {
                             }
                             songWidget.addSong(song);
                             addSongToAlbum(song);
-                            
                         }
                     }
                     }
@@ -162,6 +170,23 @@ public class MusicPlayer extends Application {
                     playPause.add(playPause.pause,1,2);
                     
                     mediaPlayer.play();
+                    
+                }
+                    
+        });
+        
+                playPause.volume.setOnAction(new EventHandler<ActionEvent>(){
+                @Override
+                public void handle(ActionEvent arg0) {
+
+                    
+                    //mediaPlayer.setMute(true);
+                    //playPause.volumeSlider.setDisable(true);
+                    if(mediaPlayer.isMute()){
+                        mediaPlayer.setMute(false);
+                    }else{
+                        mediaPlayer.setMute(true);
+                    }
                     
                 }
                     
@@ -199,10 +224,10 @@ public class MusicPlayer extends Application {
 //                while(!Library.songs.isEmpty()){
 //                    System.out.print(Library.songs.get(i).getTitle());
 //                }
-
                     System.out.println(Library.songs.get(0).getTitle() + " " + Library.songs.get(0).getArtist());
                     System.out.println(Library.songs.get(1).getTitle() + " " + Library.songs.get(1).getArtist());
                     System.out.println(Library.songs.get(2).getTitle() + " " + Library.songs.get(2).getArtist());
+                    albumArt.addAlbumArt(null);
             }
                     
         });
@@ -216,10 +241,6 @@ public class MusicPlayer extends Application {
                     
         });
         */
-        
-        
-        
-        
         
         borderPane.prefHeightProperty().bind(scene.heightProperty());
         borderPane.prefWidthProperty().bind(scene.widthProperty());
@@ -275,11 +296,12 @@ public class MusicPlayer extends Application {
     
     public static void selectSong(String path){
         media = new Media(new File(path).toURI().toString());
-
+        
         mediaPlayer = new MediaPlayer(media);
         //AutoPlay set to false
         mediaPlayer.setAutoPlay(false);
         mediaView = new MediaView(mediaPlayer);
+        
     }
 /*
     protected void updateValues() {

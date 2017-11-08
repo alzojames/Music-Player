@@ -32,6 +32,7 @@ public class Song {
     //private String length = "length"; 
     private String composer;
     private String genre; 
+    private String duration;
     
 
     
@@ -64,6 +65,7 @@ public class Song {
             genre = metadata.get("xmpDM:genre");
             album = metadata.get("xmpDM:album");
 
+            
             for(int i = 0; i < metaData.length; i++){
 
                 switch (i){
@@ -117,4 +119,7 @@ public class Song {
         this.album =  newAlbum;
     }
 
+    public String toString(){
+        return String.format("%-80s \t%-30s \t%-20s", getTitle(),getArtist(),getAlbum());
+    }
 }
