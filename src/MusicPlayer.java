@@ -14,10 +14,12 @@ import com.jfoenix.controls.JFXButton;
 import java.awt.Color;
 import java.io.File;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -45,12 +47,14 @@ public class MusicPlayer extends Application {
     double height;
     static MediaView mediaView;
     static String path;
+    ArrayList<Song> playing;
     
     static PlayPauseWidget playPause;
     SongWidget songWidget;
     AlbumArt albumArt;
     PlayListWidget playList = new PlayListWidget();
     ArtistWidget artistWidget;
+    int songIndex;
     
     public void start(Stage primaryStage) {
 
@@ -76,11 +80,11 @@ public class MusicPlayer extends Application {
             
             //Call the Playlist Artist... Widget classes
             switch (i){
-                case 0: tab.setContent(albumArt = new AlbumArt());
+                case 0: tab.setContent(new PlayPauseWidget());
                         break;
                 case 1: tab.setContent(artistWidget = new ArtistWidget());
                         break;
-                case 2: tab.setContent(new PlayPauseWidget());
+                case 2: tab.setContent(albumArt = new AlbumArt());
                         break;
                 case 3: tab.setContent(songWidget = new SongWidget());
                         break;
@@ -122,6 +126,8 @@ public class MusicPlayer extends Application {
                 }
             }
         });
+        
+        
         
         playPause.importFiles.setOnAction(new EventHandler<ActionEvent>(){
                 @Override
@@ -220,18 +226,20 @@ public class MusicPlayer extends Application {
         playPause.next.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-//                int i = 0;
-//                while(!Library.songs.isEmpty()){
-//                    System.out.print(Library.songs.get(i).getTitle());
-//                }
-                    System.out.println(Library.songs.get(0).getTitle() + " " + Library.songs.get(0).getArtist());
-                    System.out.println(Library.songs.get(1).getTitle() + " " + Library.songs.get(1).getArtist());
-                    System.out.println(Library.songs.get(2).getTitle() + " " + Library.songs.get(2).getArtist());
-                    albumArt.addAlbumArt(null);
+                songIndex++;
+                selectSong(songIndex);
             }
                     
         });
         
+        playPause.last.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent arg0) {
+                songIndex--;
+                selectSong(songIndex);
+            }
+                    
+        });
         /*
         playPause.volume.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -280,6 +288,7 @@ public class MusicPlayer extends Application {
                 System.out.println(album.getTitle());
             }
     }
+    
 //    public void addSongToArtist(Song song){
 //        if (Library.artists.containsKey(song.getArtist())){
 //                                
@@ -294,14 +303,70 @@ public class MusicPlayer extends Application {
 //            }
 //    }
     
-    public static void selectSong(String path){
-        media = new Media(new File(path).toURI().toString());
+    public static void selectSong(Song song){
+        
+        //playing = songs.getItems();
+        
+        media = new Media(new File(song.getId()).toURI().toString());
         
         mediaPlayer = new MediaPlayer(media);
-        //AutoPlay set to false
-        mediaPlayer.setAutoPlay(false);
+        mediaPlayer.setAutoPlay(true);
         mediaView = new MediaView(mediaPlayer);
+        playPause.currentSongDisplay.clear();
+        playPause.currentSongDisplay.appendText("Song: " +  song.getTitle() + "\nArtist: " + song.getArtist() + "\nAlbum: " + song.getAlbum());
         
+    }
+    
+        public static void selectSong(int index){
+            
+            Song song = Library.songs.get(index);
+            //playing = songs.getItems();
+/*
+            media = new Media(new File(song.getId()).toURI().toString());
+
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setAutoPlay(true);
+            mediaView = new MediaView(mediaPlayer);
+            playPause.currentSongDisplay.clear();
+            playPause.currentSongDisplay.appendText("Song: " +  song.getTitle() + "\nArtist: " + song.getArtist() + "\nAlbum: " + song.getAlbum());
+*/
+  //          playSong(song);    
+    }
+        
+    public void playSong(Song song){
+         try
+                {
+                     
+                    System.out.print("Pause");
+                    playPause.getChildren().remove(playPause.pause);
+                    Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
+                    playPause.play.setGraphic(new ImageView(lastIcon));
+                    ImageView pauseView = new ImageView(lastIcon);
+                    pauseView.setFitWidth(5);
+                    pauseView.setFitHeight(5);
+                    playPause.add(playPause.pause,1,2);
+
+                    MusicPlayer.mediaPlayer.pause();
+                    System.out.print("Pause!!!!!!");
+                }
+ 
+                     
+                catch(NullPointerException e)
+                {
+                    System.out.print("Error");
+                }
+                    MusicPlayer.selectSong(song);
+                    //playPause.getChildren().remove(playPause.play);
+                    Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
+                    playPause.pause.setGraphic(new ImageView(lastIcon));
+                    ImageView pauseView = new ImageView(lastIcon);
+                    pauseView.setFitWidth(5);
+                    pauseView.setFitHeight(5);
+                    playPause.add(playPause.pause,1,2);
+                    
+                    
+                    MusicPlayer.mediaPlayer.play();
+                
     }
 /*
     protected void updateValues() {

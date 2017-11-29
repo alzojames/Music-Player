@@ -57,8 +57,7 @@ public class AlbumArt extends GridPane{
         imageView.setFitWidth(125);
         imageView.setFitHeight(125);
         albumArt.setGraphic(imageView);
-        
-        add(albumArt,x,y);
+        add(albumArt,0,0);
         add(albumLabel,0,1);
         x++;
         //This is for demo purposes, but this constucter will only make one album artwork at a time
@@ -66,23 +65,5 @@ public class AlbumArt extends GridPane{
         
     }
     
-    public void addAlbumArt(String art){
-        if(art == null){
-            
-        }
-        Image image2 = new Image(getClass().getResourceAsStream("TheIncredibleTrueStory.jpg"));
-        JFXButton albumArt2 = new JFXButton("");
-        ImageView imageView2 = new ImageView(image2);
-        imageView2.setFitWidth(125);
-        imageView2.setFitHeight(125);
-        albumArt2.setGraphic(imageView2);
-        /*
-        The position will have to depend on some kind of equation that will add each 
-        in the right spot
-        */
-        
-        add(albumArt2,x,y);
-        add(artistLabel,1,1);
-        //add(artistLabel,0,2);
-    }
+
 }

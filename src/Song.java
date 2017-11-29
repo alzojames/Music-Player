@@ -24,7 +24,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import javafx.scene.media.*;
 
-public class Song {
+public class Song
+{
     private String id;
     private String title;
     private String artist;
@@ -36,7 +37,8 @@ public class Song {
     
 
     
-    public Song(String filelocation){
+    public Song(String filelocation)
+    {
         //getmetaData(filelocation);
         
         // String fileLocation = "";//"C:\\Users\\ndeme\\Documents\\New folder\\test.mp3";
@@ -81,7 +83,8 @@ public class Song {
             //return metaData;
             //System.out.println("Title: " + title + "\nArtist: " + artist + "\nComposer: " + composer + "\nGenre: " + genre + "\nAlbum: " +album);
 
-            } catch (FileNotFoundException e) {
+            }catch (FileNotFoundException e) 
+            {
             e.printStackTrace();
             } catch (IOException e) {
             e.printStackTrace();
@@ -119,7 +122,8 @@ public class Song {
         this.album =  newAlbum;
     }
 
-    public String toString(){
+    public String toString()
+    {
         return String.format("%-80s \t%-30s \t%-20s", getTitle(),getArtist(),getAlbum());
     }
 }

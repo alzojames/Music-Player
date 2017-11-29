@@ -11,6 +11,7 @@ public final class Album implements Comparable<Album> {
     private String title;
     private String artist;
     private Image artwork;
+    AlbumArt art;
     private HashSet<Song> songs = new HashSet<Song>();
     private SimpleObjectProperty<Image> artworkProperty;
 
@@ -30,6 +31,7 @@ public final class Album implements Comparable<Album> {
         this.songs = songs;
         this.artworkProperty = new SimpleObjectProperty<>(getArtwork());
     }
+    
 
     /**
      * Gets album ID.

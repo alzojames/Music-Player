@@ -35,7 +35,8 @@ import musicplayer.Song;
  *
  * @author jndemera2
  */
-public class SongWidget extends GridPane{
+public class SongWidget extends GridPane
+{
     
     int count = 1;
     private HashMap<Song, String> pickSong = new HashMap<Song, String>();
@@ -44,7 +45,7 @@ public class SongWidget extends GridPane{
     JFXButton album;
     JFXListView<String> list = new JFXListView<String>();
     ObservableList<String> items = FXCollections.observableArrayList();
-    
+    ObservableList<Song> songs = FXCollections.observableArrayList();
     public SongWidget(){
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
@@ -63,15 +64,16 @@ public class SongWidget extends GridPane{
         add(list,0,0);
     }  
     
-    public void addSong(Song song){
+    public void addSong(Song song)
+    {
 //        songTitle = new JFXButton(song.getTitle() + "\t " + song.getArtist() + "\t " + song.getAlbum());
 //        add(songTitle,0,count);
 //        pickSong.put(song,song.getId());
 //        count++;
-        System.out.println(String.format("%-80s%-30s%-20s", song.getTitle(),song.getArtist(),song.getAlbum()));
+        //System.out.println(String.format("%-80s%-30s%-20s", song.getTitle(),song.getArtist(),song.getAlbum()));
+        songs.add(song);
         items.add(String.format("%-80s%-30s%-20s", song.getTitle(),song.getArtist(),song.getAlbum()));
         list.setItems(items);
-        
                 
         list.getSelectionModel();
 //        items.addListener(new ListChangeListener() {
@@ -81,35 +83,48 @@ public class SongWidget extends GridPane{
 //            }       
 //        });
         
-        //System.out.println(list.getSelectionModel().getSelectedItem());
-
+        System.out.println(list.getSelectionModel().getSelectedItem());
+        
+        list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         list.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> 
                 observable, String oldValue, String newValue) -> {
-                //System.out.println("ListView selection changed from oldValue = " + oldValue + " to newValue = " + newValue);
-                try{
-                    MusicPlayer.playPause.pause.setOnAction(new EventHandler<ActionEvent>(){
-                        @Override
-                        public void handle(ActionEvent arg0) {
-                            System.out.print("Pause");
-                            playPause.getChildren().remove(playPause.pause);
-                            Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
-                            playPause.play.setGraphic(new ImageView(lastIcon));
-                            ImageView pauseView = new ImageView(lastIcon);
-                            pauseView.setFitWidth(5);
-                            pauseView.setFitHeight(5);
-                            playPause.add(playPause.play,1,2);
-
-                            MusicPlayer.mediaPlayer.pause();
-                            //MusicPlayer.selectSong(song.getId());
-                            System.out.print("Pause!!!!!!");
-                            
-                        }
-
-                    });
-                    }catch(NullPointerException e){
-                        
-                    }
+                int x = list.getSelectionModel().getSelectedIndex();;
+                System.out.println(x);
                 
+                MusicPlayer.selectSong(x-1);
+                
+
+                    
+                    
+        });
+/*
+        list.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> 
+                observable, String oldValue, String newValue) -> {
+                String x = list.getSelectionModel().toString();
+                System.out.println(x);
+                            
+                try
+                {
+                     
+                    System.out.print("Pause");
+                    playPause.getChildren().remove(playPause.pause);
+                    Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
+                    playPause.play.setGraphic(new ImageView(lastIcon));
+                    ImageView pauseView = new ImageView(lastIcon);
+                    pauseView.setFitWidth(5);
+                    pauseView.setFitHeight(5);
+                    playPause.add(playPause.pause,1,2);
+
+                    MusicPlayer.mediaPlayer.pause();
+                    System.out.print("Pause!!!!!!");
+                }
+ 
+                     
+                catch(NullPointerException e)
+                {
+                    System.out.print("Error");
+                }
+                    MusicPlayer.selectSong(song);
                     playPause.getChildren().remove(playPause.play);
                     Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
                     playPause.pause.setGraphic(new ImageView(lastIcon));
@@ -118,16 +133,13 @@ public class SongWidget extends GridPane{
                     pauseView.setFitHeight(5);
                     playPause.add(playPause.pause,1,2);
                     
-                    MusicPlayer.selectSong(song.getId());
-                    System.out.println(song.getTitle() + "is playing");
+                    
                     MusicPlayer.mediaPlayer.play();
                     
-                    playPause.currentSongDisplay.clear();
-                    playPause.currentSongDisplay.appendText("Song: " +  song.getTitle() + "\nArtist: " + song.getArtist() + "\nAlbum: " + song.getAlbum());
+                    
         });
         //list.setItems(items);
-
-
+*/
     }
 
 }
