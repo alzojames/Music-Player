@@ -135,28 +135,6 @@ public class PlayPauseWidget extends GridPane{
 
             }
         });
-                
-/*
-        play.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                getChildren().remove(play);
-                Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
-                pause.setGraphic(new ImageView(lastIcon));
-                ImageView pauseView = new ImageView(lastIcon);
-                pauseView.setFitWidth(5);
-                pauseView.setFitHeight(5);
-                add(pause,1,2);
-                
-                MusicPlayer.mediaPlayer.play();
-                
-//                String metaData[] = lib.getmetaData("");
-//                updatecurrentSongDisplay(metaData[0],metaData[1],metaData[2]);
-            }
-        });
-        
-*/
         
         /*
         This event handler will play the previous track

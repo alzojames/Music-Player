@@ -84,4 +84,8 @@ public final class Artist implements Comparable<Artist> {
         artistWidget.addSong(song);
     } 
     
+    public ArtistWidget getArtistWidget(){
+        return artistWidget;
+    }
+    
 }

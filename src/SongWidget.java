@@ -46,7 +46,7 @@ public class SongWidget extends GridPane
     JFXButton songTitle;
     JFXButton artist;
     JFXButton album;
-    ListView<String> list = new ListView<String>();
+    JFXListView<String> list = new JFXListView<String>();
     ObservableList<String> items = FXCollections.observableArrayList();
     ObservableList<Song> songs = FXCollections.observableArrayList();
    // ListAdapter adapter;
@@ -79,81 +79,42 @@ public class SongWidget extends GridPane
         list.setItems(items);
                 
         list.getSelectionModel();
-        
-        
-        //System.out.println(list.getSelectionModel().getSelectedItem());
-
-
-
-//labelresponse.setText("You selected " + selection);
  
 
-        
-        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        list.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> 
-                observable, String oldValue, String newValue) -> {
+
+        list.setOnMouseClicked(new ListViewHandler(){
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                System.out.print("Something worked");
                 int x = list.getSelectionModel().getSelectedIndex();;
                 System.out.println(x);
+
                 
                 MusicPlayer.selectSong(x-1);
+                MusicPlayer.songIndex = x-1;
                 
                 try{
                 playPause.getChildren().remove(playPause.play);
-                }catch(UnknownException e){
+                }catch(IllegalArgumentException e){
                     System.out.print("Unable to remove button");
                 }
+                
                 Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
                 playPause.pause.setGraphic(new ImageView(lastIcon));
                 ImageView pauseView = new ImageView(lastIcon);
                 pauseView.setFitWidth(5);
                 pauseView.setFitHeight(5);
-                playPause.add(playPause.pause,1,2);
-       
+                
+                try{
+                    playPause.add(playPause.pause,1,2);
+                }catch(IllegalArgumentException a){
+                    System.out.print("Unable to put button");
+                }
+            }
+            
         });
         
-/*
-        list.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> 
-                observable, String oldValue, String newValue) -> {
-                String x = list.getSelectionModel().toString();
-                System.out.println(x);
-                            
-                try
-                {
-                     
-                    System.out.print("Pause");
-                    playPause.getChildren().remove(playPause.pause);
-                    Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
-                    playPause.play.setGraphic(new ImageView(lastIcon));
-                    ImageView pauseView = new ImageView(lastIcon);
-                    pauseView.setFitWidth(5);
-                    pauseView.setFitHeight(5);
-                    playPause.add(playPause.pause,1,2);
 
-                    MusicPlayer.mediaPlayer.pause();
-                    System.out.print("Pause!!!!!!");
-                }
- 
-                     
-                catch(NullPointerException e)
-                {
-                    System.out.print("Error");
-                }
-                    MusicPlayer.selectSong(song);
-                    playPause.getChildren().remove(playPause.play);
-                    Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
-                    playPause.pause.setGraphic(new ImageView(lastIcon));
-                    ImageView pauseView = new ImageView(lastIcon);
-                    pauseView.setFitWidth(5);
-                    pauseView.setFitHeight(5);
-                    playPause.add(playPause.pause,1,2);
-                    
-                    
-                    MusicPlayer.mediaPlayer.play();
-                    
-                    
-        });
-        //list.setItems(items);
-*/
     
     }
 }

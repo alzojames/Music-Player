@@ -55,7 +55,8 @@ public class MusicPlayer extends Application {
     PlayListWidget playList = new PlayListWidget();
     //ArtistWidget artistWidget;
     ArtistWidgetHolder artistWidgetHolder;
-    int songIndex;
+    AlbumArtWidget albumArtWidget;
+    static int songIndex;
     
     public void start(Stage primaryStage) {
 
@@ -86,7 +87,7 @@ public class MusicPlayer extends Application {
                         break;
                 case 1: tab.setContent(artistWidgetHolder = new ArtistWidgetHolder());
                         break;
-                case 2: tab.setContent(albumArt = new AlbumArt());
+                case 2: tab.setContent(albumArtWidget = new AlbumArtWidget());
                         break;
                 case 3: tab.setContent(songWidget = new SongWidget());
                         break;
@@ -95,7 +96,6 @@ public class MusicPlayer extends Application {
                 
             }
     
-            
             hbox.setAlignment(Pos.CENTER);
             tabPane.getTabs().add(tab);
         }
@@ -128,8 +128,7 @@ public class MusicPlayer extends Application {
                 }
             }
         });
-        
-        
+     
         
         playPause.importFiles.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -240,12 +239,22 @@ public class MusicPlayer extends Application {
         playPause.next.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
+                
+                System.out.print(songIndex + " + 1 = " );
+                System.out.print(songIndex+1);
                 songIndex++;
+                
                 try{
                     mediaPlayer.stop();
+                    mediaPlayer = null;
+                    System.gc();
                     selectSong(songIndex);
                 }catch(IndexOutOfBoundsException e){
-                    
+                    songIndex = 0;
+                    mediaPlayer.stop();
+                    mediaPlayer = null;
+                    System.gc();
+                    selectSong(songIndex);
                 }
             }
                     
@@ -254,14 +263,29 @@ public class MusicPlayer extends Application {
         playPause.last.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                songIndex--;
-                selectSong(songIndex);
+                
+                System.out.print(songIndex + " - 1 = " );
+                System.out.print(songIndex-1);
+                songIndex = songIndex -1;
+                
                 
                 try{
                     mediaPlayer.stop();
+                    mediaPlayer = null;
+                    System.gc();
                     selectSong(songIndex);
                 }catch(IndexOutOfBoundsException e){
-                    
+                    songIndex = 0;
+                    try{
+                        System.out.print("Index" + songIndex);
+                        
+                        mediaPlayer.stop();
+                        mediaPlayer = null;
+                        System.gc();
+                        selectSong(songIndex);
+                    }catch(NullPointerException a){
+                        
+                    }
                 }
             }
                     
@@ -307,6 +331,7 @@ public class MusicPlayer extends Application {
             //if the album already exists add the song to the album 
             Library.albums.get(song.getAlbum()).addSongs(song);
             System.out.println(song.getAlbum());
+            Library.artists.get(song.getArtist()).artistWidget.addSong(song);
             //artistWidget.addSong(song, song.getAlbum(), song.getArtist());
             
         }else{
@@ -319,9 +344,17 @@ public class MusicPlayer extends Application {
             //addAlbumToArtist(album);
             System.out.println(album.getTitle());
             addAlbumToArtist(album);
-            Library.artists.get(album.getArtist()).artistWidget.addSong(song);
+            Library.artists.get(album.getArtist()).getArtistWidget().addSong(song);
             
-            ArtistWidgetHolder.addArtist(Library.artists.get(album.getArtist()).artistWidget);
+            ArtistWidget artistWidget = Library.artists.get(album.getArtist()).getArtistWidget();
+            artistWidgetHolder.addArtist(artistWidget);
+            
+            album.setArtWork();
+            albumArtWidget.addArtWork(album.art);
+            
+            
+            
+            //artistWidgetHolder.addArtist(artistWidget);
             
         }
  
@@ -360,16 +393,22 @@ public class MusicPlayer extends Application {
     }
     
     public static void selectSong(int index){
+        try{
+        mediaPlayer.stop();
+        mediaPlayer = null;
+        System.gc();
+        }catch(NullPointerException e){
             
-            Song song = Library.songs.get(index);
-            //playing = songs.getItems();
+        }
+        Song song = Library.songs.get(index);
+        //playing = songs.getItems();
 
-            media = new Media(new File(song.getId()).toURI().toString());
-            mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setAutoPlay(true);
-            mediaView = new MediaView(mediaPlayer);
-            playPause.currentSongDisplay.clear();
-            playPause.currentSongDisplay.appendText("Song: " +  song.getTitle() + "\nArtist: " + song.getArtist() + "\nAlbum: " + song.getAlbum());
+        media = new Media(new File(song.getId()).toURI().toString());
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setAutoPlay(true);
+        mediaView = new MediaView(mediaPlayer);
+        playPause.currentSongDisplay.clear();
+        playPause.currentSongDisplay.appendText("Song: " +  song.getTitle() + "\nArtist: " + song.getArtist() + "\nAlbum: " + song.getAlbum());
 
 //            playSong(song);    
     }

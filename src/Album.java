@@ -88,6 +88,10 @@ public final class Album implements Comparable<Album> {
     public void addSongs(Song song){
         songs.add(song);
     }
+    
+    public void setArtWork(){
+        art = new AlbumArt(this.title,this.artist);
+    }
 
     @Override
     public int compareTo(Album other) {
