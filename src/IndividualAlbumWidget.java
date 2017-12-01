@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package musicplayer;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
@@ -21,11 +16,17 @@ import javafx.scene.text.Text;
 import static org.apache.tika.mime.MediaType.*;
 import org.controlsfx.control.*;
 import org.controlsfx.control.cell.ColorGridCell;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */ 
+
 /**
  *
  * @author jndemera2
  */
-public class ArtistWidget extends GridPane{
+public class IndividualAlbumWidget extends GridPane{
     Label albumLabel = new Label("Album Name\nArtist Name");
     Label artistLabel = new Label("Album Name\nArtist Name");
     Text albumText;
@@ -36,8 +37,7 @@ public class ArtistWidget extends GridPane{
     ObservableList<String> items = FXCollections.observableArrayList();
     ObservableList<Song> songs = FXCollections.observableArrayList();
     
-    public ArtistWidget() {
-        
+    public IndividualAlbumWidget() {
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
         setHgap(10);
@@ -65,13 +65,12 @@ public class ArtistWidget extends GridPane{
         items.add(String.format("%-80s \t%-30s \t%-20s", "Title","Artist","Album"));
         list.setItems(items);
         add(list,2,2);
-        
     }
-        
-    public void addSong(Song song){
+    
+        public void addSong(Song song, String albumName, String artistName){
 
-        albumText = new Text(song.getAlbum());
-        artistText = new Text(song.getArtist());
+        albumText = new Text(albumName);
+        artistText = new Text(artistName);
         
         albumText.setFont(Font.font ("Verdana", 20));
         add(albumText,2,0);
@@ -82,5 +81,4 @@ public class ArtistWidget extends GridPane{
         list.setItems(items);
         
     }
-                
 }

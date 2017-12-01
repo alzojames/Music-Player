@@ -6,20 +6,28 @@ import javafx.beans.property.SimpleObjectProperty;
 import musicplayer.Album;
 public final class Artist implements Comparable<Artist> {
 
-    private String title;
-    //HashSet<Album> albums = new HashSet<Albums>();
+    private String name;
+    static HashSet<Album> albums = new HashSet<Album>();
     private Image artistImage;
     private SimpleObjectProperty<Image> artistImageProperty;
+    ArtistWidget artistWidget;
 
     /**
      * Constructor for the Artist class.
      * Creates an artist object and obtains the artist artwork.
      *
-     * @param title Artist name
+     * @param name Artist name
      * @param albums List of artist albums
      */
-    public Artist(String title) {
-        this.title = title;
+    public Artist(String name) {
+
+        if(name == null){
+            this.name = "Unkown";
+        }else{
+            this.name = name;
+        }
+        
+        artistWidget = new ArtistWidget();
         this.artistImageProperty = new SimpleObjectProperty<>(getArtistImage());
     }
 
@@ -27,8 +35,8 @@ public final class Artist implements Comparable<Artist> {
      * Gets the artist title.
      * @return artist title
      */
-    public String getTitle() {
-        return this.title;
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -66,4 +74,14 @@ public final class Artist implements Comparable<Artist> {
     public int compareTo(Artist o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public static void addAlbums(Album album){
+        albums.add(album); 
+        
+    }
+    
+    public void addSong(Song song){
+        artistWidget.addSong(song);
+    } 
+    
 }

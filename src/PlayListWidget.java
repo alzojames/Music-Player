@@ -37,11 +37,12 @@ public class PlayListWidget extends GridPane{
         
         GridPane.setHgrow(myGrid, Priority.ALWAYS);
         GridPane.setVgrow(myGrid, Priority.ALWAYS);
-            for(int i = 0; i < 10000; i++) {
-                myGrid.getItems().addAll(new Color(i));
-                
-            }
+        
+        for(int i = 0; i < 10000; i++) {
+            
+            myGrid.getItems().addAll(new Color(i));
 
+        }
         add(myGrid,0,0);
     }
 }

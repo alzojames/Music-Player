@@ -63,10 +63,10 @@ public class Library {
 
         // List all metadata
         String[] metadataNames = metadata.names();
-
+        
         // Retrieve the necessary info from metadata
         // Names - title, xmpDM:artist etc. - mentioned below may differ based
-
+        
         title = metadata.get("title");
         artist = metadata.get("xmpDM:artist");
         composer = metadata.get("xmpDM:composer");
@@ -101,7 +101,10 @@ public class Library {
         return metaData;
     }
     
+    //put new songs in the library
     public static void addSong(Song song){
        songs.add(song); 
+
     }
+
 }

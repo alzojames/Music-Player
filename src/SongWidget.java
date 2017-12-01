@@ -16,14 +16,17 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import java.util.*;
+import static java.util.Collections.list;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javax.swing.text.View;
+import jdk.nashorn.internal.runtime.ListAdapter;
 import static musicplayer.MusicPlayer.playPause;
 import musicplayer.Song;
+import org.omg.CORBA.portable.UnknownException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -43,9 +46,11 @@ public class SongWidget extends GridPane
     JFXButton songTitle;
     JFXButton artist;
     JFXButton album;
-    JFXListView<String> list = new JFXListView<String>();
+    ListView<String> list = new ListView<String>();
     ObservableList<String> items = FXCollections.observableArrayList();
     ObservableList<Song> songs = FXCollections.observableArrayList();
+   // ListAdapter adapter;
+    
     public SongWidget(){
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
@@ -53,10 +58,11 @@ public class SongWidget extends GridPane
         Label label = new Label("Title \t Artist \t Album");
         add(label,0,0);
         
+        
         //Region r = new Region();
         //GridPane.setHgrow(r, Priority.ALWAYS);
         //GridPane.setVgrow(r, Priority.ALWAYS);
-        
+
         GridPane.setHgrow(list, Priority.ALWAYS);
         GridPane.setVgrow(list, Priority.ALWAYS);
         items.add(String.format("%-80s%-30s%-20s", "Title","Artist","Album"));
@@ -66,26 +72,24 @@ public class SongWidget extends GridPane
     
     public void addSong(Song song)
     {
-//        songTitle = new JFXButton(song.getTitle() + "\t " + song.getArtist() + "\t " + song.getAlbum());
-//        add(songTitle,0,count);
-//        pickSong.put(song,song.getId());
-//        count++;
+
         //System.out.println(String.format("%-80s%-30s%-20s", song.getTitle(),song.getArtist(),song.getAlbum()));
         songs.add(song);
         items.add(String.format("%-80s%-30s%-20s", song.getTitle(),song.getArtist(),song.getAlbum()));
         list.setItems(items);
                 
         list.getSelectionModel();
-//        items.addListener(new ListChangeListener() {
-//            @Override
-//            public void onChanged(ListChangeListener.Change change) {
-//                System.out.println("Detected a change! ");
-//            }       
-//        });
         
-        System.out.println(list.getSelectionModel().getSelectedItem());
         
-        list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        //System.out.println(list.getSelectionModel().getSelectedItem());
+
+
+
+//labelresponse.setText("You selected " + selection);
+ 
+
+        
+        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         list.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> 
                 observable, String oldValue, String newValue) -> {
                 int x = list.getSelectionModel().getSelectedIndex();;
@@ -93,10 +97,20 @@ public class SongWidget extends GridPane
                 
                 MusicPlayer.selectSong(x-1);
                 
-
-                    
-                    
+                try{
+                playPause.getChildren().remove(playPause.play);
+                }catch(UnknownException e){
+                    System.out.print("Unable to remove button");
+                }
+                Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
+                playPause.pause.setGraphic(new ImageView(lastIcon));
+                ImageView pauseView = new ImageView(lastIcon);
+                pauseView.setFitWidth(5);
+                pauseView.setFitHeight(5);
+                playPause.add(playPause.pause,1,2);
+       
         });
+        
 /*
         list.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> 
                 observable, String oldValue, String newValue) -> {
@@ -140,6 +154,6 @@ public class SongWidget extends GridPane
         });
         //list.setItems(items);
 */
+    
     }
-
 }

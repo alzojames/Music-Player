@@ -67,6 +67,25 @@ public class Song
             genre = metadata.get("xmpDM:genre");
             album = metadata.get("xmpDM:album");
 
+            if(title == null){
+                title = "Unkown";
+            }
+            
+            if(artist == null){
+                artist = "Unkown";
+            }
+            
+            if(composer == null){
+                composer = "Unkown";
+            }
+            
+            if(genre == null){
+                genre = "Unkown";
+            }
+            
+            if(album == null){
+                album = "Unkown";
+            }
             
             for(int i = 0; i < metaData.length; i++){
 

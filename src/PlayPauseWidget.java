@@ -132,15 +132,11 @@ public class PlayPauseWidget extends GridPane{
             
             @Override
             public void handle(ActionEvent event) {
-                //System.out.println("Hello World!");
-                
-                //lib.getmetaData();
-                //Song d = new Song();
-                //d.last();
+
             }
         });
                 
-
+/*
         play.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
@@ -153,15 +149,14 @@ public class PlayPauseWidget extends GridPane{
                 pauseView.setFitHeight(5);
                 add(pause,1,2);
                 
-                //MusicPlayer.play();
-                
+                MusicPlayer.mediaPlayer.play();
                 
 //                String metaData[] = lib.getmetaData("");
 //                updatecurrentSongDisplay(metaData[0],metaData[1],metaData[2]);
             }
         });
         
-
+*/
         
         /*
         This event handler will play the previous track

@@ -26,8 +26,18 @@ public final class Album implements Comparable<Album> {
      */
     public Album(String title, String artist) {
         //this.id = id;
-        this.title = title;
-        this.artist = artist;
+        if(title == null){
+            this.title = "Unkown";
+        }else{
+            this.title = title;
+        }
+
+        if(artist == null){
+            this.artist = "Unkown";
+        }else{
+            this.artist = artist;
+        }
+        
         this.songs = songs;
         this.artworkProperty = new SimpleObjectProperty<>(getArtwork());
     }
