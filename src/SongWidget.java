@@ -72,9 +72,7 @@ public class SongWidget extends GridPane
        
         //add(label,0,0);
         
-        public SongWidget() {
-        	
-        }
+        
         
         
         //Region r = new Region();
