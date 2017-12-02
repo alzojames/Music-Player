@@ -55,8 +55,26 @@ public class SongWidget extends GridPane
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
         setHgap(10);
-        Label label = new Label("Title \t Artist \t Album");
-        add(label,0,0);
+        //Label label = new Label("Title \t Artist \t Album");
+        final Label title = createLabel("Title");
+        final Label artist = createLabel("Artist");
+        final Label album = createLabel("Album");
+        
+        title.textProperty().bind(SongWidget.titlePropety());
+        artist.textProperty().bind(SongWidget.artistPropety());
+        album.textProperty().bind(SongWidget.albumPropety());
+        
+       grid.add(title, 1, 0);
+       grid.add(artist, 1, 1);
+       grid.add(album, 1, 2);
+       
+       
+       
+        //add(label,0,0);
+        
+        public SongWidget() {
+        	
+        }
         
         
         //Region r = new Region();
@@ -77,7 +95,9 @@ public class SongWidget extends GridPane
         songs.add(song);
         items.add(String.format("%-80s%-30s%-20s", song.getTitle(),song.getArtist(),song.getAlbum()));
         list.setItems(items);
-                
+        
+                                  
+        
         list.getSelectionModel();
  
 
@@ -86,12 +106,12 @@ public class SongWidget extends GridPane
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 System.out.print("Something worked");
-                int x = list.getSelectionModel().getSelectedIndex()-1;
+                int x = list.getSelectionModel().getSelectedIndex();;
                 System.out.println(x);
 
                 
-                MusicPlayer.selectSong(x,Library.songs);
-                MusicPlayer.songIndex = x;
+                MusicPlayer.selectSong(x-1);
+                MusicPlayer.songIndex = x-1;
                 
                 try{
                 playPause.getChildren().remove(playPause.play);
