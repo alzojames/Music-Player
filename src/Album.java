@@ -12,7 +12,8 @@ public final class Album implements Comparable<Album> {
     private String artist;
     private Image artwork;
     AlbumArt art;
-    private HashSet<Song> songs = new HashSet<Song>();
+    
+    ArrayList<Song> songs = new ArrayList<Song>();
     private SimpleObjectProperty<Image> artworkProperty;
 
     /**
@@ -92,6 +93,8 @@ public final class Album implements Comparable<Album> {
     public void setArtWork(){
         art = new AlbumArt(this.title,this.artist);
     }
+    
+    
 
     @Override
     public int compareTo(Album other) {
@@ -105,4 +108,10 @@ public final class Album implements Comparable<Album> {
         return null;
         //removes "a", "an" and "the" from the name of the album
     }
+
+    /**
+     *
+     * @return
+     */
+
 }

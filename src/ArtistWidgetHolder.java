@@ -28,7 +28,7 @@ public class ArtistWidgetHolder extends VBox{
     
     public void addArtist(ArtistWidget wigdet){
         
-        this.getChildren().add(wigdet);
+        //this.getChildren().add(wigdet);
         //vb.getChildren().addAll(sp,wigdet);
         
     }

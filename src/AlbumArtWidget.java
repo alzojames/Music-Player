@@ -59,20 +59,7 @@ public class AlbumArtWidget extends TilePane{
         setVgap(10);
         setHgap(10);
        getChildren().addAll();
- /*     
-        //TilePane tilepane = new TilePane();
-        for (int i = 0; i < 20; i++) {
-            System.out.println("album widet");
 
-            Label label = new Label("albumArt.jpg");
-            //Image image = new Image(getClass().getResourceAsStream("albumArt.jpg"))
-            //ImageView imageview = new ImageView(new Image("albumArt.jpg"));
-            AlbumArt art = new AlbumArt();
-            TilePane.setAlignment(label, Pos.BOTTOM_RIGHT);
-            getChildren().add(art);
-   
-        }
-*/
     }
     public void addArtWork(AlbumArt art){
         

@@ -22,6 +22,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import java.util.*;
 import musicplayer.Album;
+
 public class Library {
     private static  String ID = "id";
     private static  String title = "title";
@@ -66,7 +67,7 @@ public class Library {
         
         // Retrieve the necessary info from metadata
         // Names - title, xmpDM:artist etc. - mentioned below may differ based
-        
+        char k = 'l';
         title = metadata.get("title");
         artist = metadata.get("xmpDM:artist");
         composer = metadata.get("xmpDM:composer");

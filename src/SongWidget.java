@@ -86,12 +86,12 @@ public class SongWidget extends GridPane
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 System.out.print("Something worked");
-                int x = list.getSelectionModel().getSelectedIndex();;
+                int x = list.getSelectionModel().getSelectedIndex()-1;
                 System.out.println(x);
 
                 
-                MusicPlayer.selectSong(x-1);
-                MusicPlayer.songIndex = x-1;
+                MusicPlayer.selectSong(x,Library.songs);
+                MusicPlayer.songIndex = x;
                 
                 try{
                 playPause.getChildren().remove(playPause.play);

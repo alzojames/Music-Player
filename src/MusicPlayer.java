@@ -36,30 +36,38 @@ import javafx.stage.FileChooser;
  */
 public class MusicPlayer extends Application {
         
-   private static final double minChange = 0.5;
+    private static final double minChange = 0.5;
     static MediaPlayer mediaPlayer;
+    static Media media;
     private Label time;
+    static MediaView mediaView;
+    static String path;
     Duration duration;
     //Button fullScreenButton;
     //Scene scene;
-    static Media media;
+  
     double width;
     double height;
-    static MediaView mediaView;
-    static String path;
-    ArrayList<Song> playing;
-    
+
+    PlayListWidget playList = new PlayListWidget();
     static PlayPauseWidget playPause;
     SongWidget songWidget;
     AlbumArt albumArt;
-    PlayListWidget playList = new PlayListWidget();
-    //ArtistWidget artistWidget;
     ArtistWidgetHolder artistWidgetHolder;
-    AlbumArtWidget albumArtWidget;
+    static AlbumArtWidget albumArtWidget;
+    //ArtistWidget artistWidget;
+
+    static Tab playListTab = new Tab("Playlists");
+    static Tab artistTab = new Tab("Artists");
+    static Tab albumTab = new Tab("Albums");
+    static Tab songTab = new Tab("Songs");
+    static Tab Genre = new Tab("Genres");
+        
+    static ArrayList<Song> playing;
     static int songIndex;
     
     public void start(Stage primaryStage) {
-
+        
         primaryStage.setTitle("Tabs");
         Group root = new Group();
         Scene scene = new Scene(root, 1000, 600);
@@ -75,6 +83,12 @@ public class MusicPlayer extends Application {
         
         //Add tabs to the the TabPane
         Tab tab;
+        playListTab = new Tab("Playlists");
+        artistTab = new Tab("Artists");
+        albumTab = new Tab("Albums");
+        songTab = new Tab("Songs");
+        Genre = new Tab("Genres");
+        
         for (int i = 0; i < 5; i++) {
             
             tab = new Tab();
@@ -83,22 +97,24 @@ public class MusicPlayer extends Application {
             
             //Call the Playlist Artist... Widget classes and put the on the TabPane
             switch (i){
-                case 0: tab.setContent(new PlayPauseWidget());
+                case 0: playListTab.setContent(new PlayPauseWidget());
                         break;
-                case 1: tab.setContent(artistWidgetHolder = new ArtistWidgetHolder());
+                case 1: artistTab.setContent(artistWidgetHolder = new ArtistWidgetHolder());
                         break;
-                case 2: tab.setContent(albumArtWidget = new AlbumArtWidget());
+                case 2: albumTab.setContent(albumArtWidget = new AlbumArtWidget());
                         break;
-                case 3: tab.setContent(songWidget = new SongWidget());
+                case 3: songTab.setContent(songWidget = new SongWidget());
                         break;
-                case 4: tab.setContent(new PlayPauseWidget());
+                case 4: Genre.setContent(new PlayPauseWidget());
                         break;
                 
             }
     
             hbox.setAlignment(Pos.CENTER);
-            tabPane.getTabs().add(tab);
+            
         }
+        
+        tabPane.getTabs().addAll(playListTab,artistTab,albumTab,songTab,Genre);
         
         playPause.timeSlider.valueProperty().addListener((obs, oldValue, newValue)->{
             if(!playPause.timeSlider.isValueChanging()) {
@@ -291,6 +307,15 @@ public class MusicPlayer extends Application {
                     
         });
         
+        /*
+        mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                selectSong(songIndex+1);
+            }
+        });
+        */
+        
         playPause.volumeSlider.valueProperty().addListener(new InvalidationListener(){
             public void invalidated(Observable ov) {
                 if (playPause.volumeSlider.isValueChanging()) {
@@ -378,18 +403,29 @@ public class MusicPlayer extends Application {
         
     }
     
-    public static void selectSong(Song song){
+    public static void selectSong(int index, ArrayList<Song> songList){
+        playing = songList;
+        songIndex = index;
+        try{
+            
+            mediaPlayer.stop();
+            mediaPlayer = null;
+            System.gc();
         
+        }catch(NullPointerException e){
+            
+        }
+         
+        Song song = playing.get(index);
         //playing = songs.getItems();
-        
+
         media = new Media(new File(song.getId()).toURI().toString());
-        
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setAutoPlay(true);
         mediaView = new MediaView(mediaPlayer);
         playPause.currentSongDisplay.clear();
         playPause.currentSongDisplay.appendText("Song: " +  song.getTitle() + "\nArtist: " + song.getArtist() + "\nAlbum: " + song.getAlbum());
-        
+
     }
     
     public static void selectSong(int index){
@@ -400,8 +436,8 @@ public class MusicPlayer extends Application {
         }catch(NullPointerException e){
             
         }
-        Song song = Library.songs.get(index);
-        //playing = songs.getItems();
+        songIndex = index;
+        Song song = playing.get(index);
 
         media = new Media(new File(song.getId()).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
@@ -410,10 +446,16 @@ public class MusicPlayer extends Application {
         playPause.currentSongDisplay.clear();
         playPause.currentSongDisplay.appendText("Song: " +  song.getTitle() + "\nArtist: " + song.getArtist() + "\nAlbum: " + song.getAlbum());
 
-//            playSong(song);    
+
+        mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                selectSong(index+1);
+            }
+        });
     }
         
-    public void playSong(Song song){
+    public void playSong(int index){
          try
                 {
                      
@@ -435,7 +477,7 @@ public class MusicPlayer extends Application {
                 {
                     System.out.print("Error");
                 }
-                    MusicPlayer.selectSong(song);
+                    MusicPlayer.selectSong(index);
                     //playPause.getChildren().remove(playPause.play);
                     Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
                     playPause.pause.setGraphic(new ImageView(lastIcon));

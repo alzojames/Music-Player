@@ -1,6 +1,10 @@
 package musicplayer;
 
 import com.jfoenix.controls.JFXButton;
+import java.util.ArrayList;
+import java.util.HashSet;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -68,9 +72,29 @@ public class AlbumArt extends GridPane{
         add(albumArt,0,0);
         add(albumLabel,0,1);
         x++;
+        
         //This is for demo purposes, but this constucter will only make one album artwork at a time
-        
-        
+        final String name = albumName;
+        albumArt.setOnAction(new EventHandler<ActionEvent>(){
+            
+            @Override
+            public void handle(ActionEvent arg0) {
+                
+               Album album = Library.albums.get(name);
+               //HashSet<Song>songs = album.songs;
+               ArrayList<Song> songs = album.getSongs();
+               //Song[] arr = songs.toArray(new Song[songs.size()]);
+               IndividualAlbumWidget widget ;
+               //MusicPlayer.albumTab.remo
+               MusicPlayer.albumTab.setContent(widget = new IndividualAlbumWidget());
+               
+               for(int i = 0; i < songs.size(); i++){
+                   System.out.println(songs.get(i).getTitle());
+                   widget.addSong(songs.get(i));
+               }
+            }
+                    
+        });
     }
     
 
