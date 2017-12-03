@@ -23,6 +23,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import javafx.scene.media.*;
+import javafx.util.Duration;
 
 public class Song
 {
@@ -66,7 +67,9 @@ public class Song
             composer = metadata.get("xmpDM:composer");
             genre = metadata.get("xmpDM:genre");
             album = metadata.get("xmpDM:album");
+            duration = metadata.get("xmpDM:duration");
 
+            System.out.print(duration);
             if(title == null){
                 title = "Unkown";
             }
@@ -144,5 +147,9 @@ public class Song
     public String toString()
     {
         return String.format("%-80s \t%-30s \t%-20s", getTitle(),getArtist(),getAlbum());
+    }
+
+    public String getDuration() {
+        return duration;
     }
 }

@@ -13,6 +13,9 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import com.jfoenix.controls.*;
 import java.io.File;
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.geometry.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +24,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import musicplayer.Song;
 import javafx.util.*;
+import static musicplayer.MusicPlayer.playPause;
 
 
 /**
@@ -31,21 +35,21 @@ import javafx.util.*;
 public class PlayPauseWidget extends GridPane{
     
         
-    JFXButton play = new JFXButton("");
-    JFXButton pause = new JFXButton("");
-    JFXButton next = new JFXButton("");
-    JFXButton last = new JFXButton("");
-    JFXTextArea currentSongDisplay = new JFXTextArea();
-    JFXButton volume = new JFXButton("");
-    JFXSlider volumeSlider = new JFXSlider();
-    JFXSlider timeSlider = new JFXSlider();
-    JFXButton importFiles = new JFXButton("Import");
+    JFXButton play;
+    JFXButton pause;
+    JFXButton next;
+    JFXButton last;
+    JFXTextArea currentSongDisplay;
+    JFXButton volume;
+    JFXSlider volumeSlider;
+    JFXSlider timeSlider;
+    JFXButton importFiles;
     
-    Library lib = new Library();
+    Library lib;
     
 
     
-    MediaPlayer mediaPlayer;
+    //MediaPlayer mediaPlayer;
     //private Label time;
     Duration duration;
     //Button fullScreenButton;
@@ -57,6 +61,17 @@ public class PlayPauseWidget extends GridPane{
     //JFXLabel currentSongDisplay = new JFXLabel("Current song");
     public  PlayPauseWidget(){
         
+        lib = new Library();
+        play = new JFXButton("");
+        pause = new JFXButton("");
+        next = new JFXButton("");
+        last = new JFXButton("");
+        currentSongDisplay = new JFXTextArea();
+        volume = new JFXButton("");
+        volumeSlider = new JFXSlider();
+        timeSlider = new JFXSlider();
+        importFiles = new JFXButton("Import");
+    
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
         setHgap(10);
@@ -69,6 +84,11 @@ public class PlayPauseWidget extends GridPane{
         Region r = new Region();
         GridPane.setHgrow(r, Priority.ALWAYS);
         GridPane.setVgrow(r, Priority.ALWAYS);
+        
+        timeSlider.setMaxWidth(Double.MAX_VALUE);
+        setHgrow(timeSlider, Priority.ALWAYS);
+        timeSlider.setMin(0);
+        timeSlider.setValue(0);
         
         /*
         put image on the icons on the buttons to make the GUI
@@ -98,7 +118,7 @@ public class PlayPauseWidget extends GridPane{
         ImageView volumeView = new ImageView(lastIcon);
         volumeView.setFitWidth(5);
         volumeView.setFitHeight(5);
-        
+        //setHgrow(timeSlider, Priority.ALWAYS);
         /*
         Add the elements on to the gridPane 
         */
@@ -147,6 +167,30 @@ public class PlayPauseWidget extends GridPane{
                 System.out.print("Working");
             }
         });
+
+    
+    }
+    
+    public void updateValues() {
+        
+            Platform.runLater(new Runnable() {
+                public void run() {
+                    Duration currentTime = MusicPlayer.mediaPlayer.getCurrentTime();
+                    //playTime.setText(formatTime(currentTime, duration));
+                    //timeSlider.setDisable(duration.isUnknown());
+                    if (!timeSlider.isDisabled()
+                            && duration.greaterThan(Duration.ZERO)
+                            && !timeSlider.isValueChanging()) {
+                        timeSlider.setValue(currentTime.divide(duration).toMillis()
+                                * 100.0);
+                    }
+                    if (!volumeSlider.isValueChanging()) {
+                        volumeSlider.setValue((int) Math.round(MusicPlayer.mediaPlayer.getVolume()
+                                * 100));
+                    }
+                }
+            });
+        
     }
     
     //This updates the info about the currrntly playing song

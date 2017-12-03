@@ -13,12 +13,19 @@ import javafx.geometry.*;
 import com.jfoenix.controls.JFXButton;
 import java.awt.Color;
 import java.io.File;
-import java.time.Duration;
+import static java.lang.Math.log;
+import java.lang.reflect.InvocationTargetException;
+//import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -28,6 +35,9 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
+import static musicplayer.MusicPlayer.mediaPlayer;
+
 
 
 /**
@@ -82,6 +92,8 @@ public class MusicPlayer extends Application {
         borderPane.setBottom(playPause);
         
         //Add tabs to the the TabPane
+
+        
         Tab tab;
         playListTab = new Tab("Playlists");
         artistTab = new Tab("Artists");
@@ -115,37 +127,47 @@ public class MusicPlayer extends Application {
         }
         
         tabPane.getTabs().addAll(playListTab,artistTab,albumTab,songTab,Genre);
-        
-        playPause.timeSlider.valueProperty().addListener((obs, oldValue, newValue)->{
-            if(!playPause.timeSlider.isValueChanging()) {
-            double currentTime = mediaPlayer.getCurrentTime().toSeconds();
-            if(Math.abs(currentTime - newValue.doubleValue())> minChange) {
-                mediaPlayer.seek(playPause.duration.multiply((long) newValue.doubleValue()));
-                //mediaPlayer.see
-            }
-            }
-        });
-        
-        playPause.volumeSlider.valueProperty().addListener(new InvalidationListener(){
-            public void invalidated(Observable ov) {
-                if (playPause.volumeSlider.isValueChanging()) {
-                    mediaPlayer.setMute(false);
-                    mediaPlayer.setVolume(playPause.volumeSlider.getValue() / 100.0);
+
+
+     /*
+        playPause.importFiles.setOnAction(
+            (ActionEvent event) -> {
+                FileChooser fileChooser = new FileChooser();
+                //fileChooser.setMultiSelectionEnabled(true);
+                //Open file explorer that allows user to pick mp3 files
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("mp3 files (*.mp3)", "*.mp3");
+                fileChooser.getExtensionFilters().add(extFilter);
+
+
+                //Put the files in a list and add them to the library
+                List<File> list =
+                    fileChooser.showOpenMultipleDialog(primaryStage);
+                            
+                Thread th = new Thread() {
+                    @Override
+                    public void run() {
+                        
+                        //System.out.print("New Thread");
+                        try {
+                            importMusic(list);
+                            
+                        } catch (Exception e) {
+                            System.out.print("Something went wrong");
+                        }
+
+
+                    }
+                };
+                try{
+                    th.start();
+                }catch(IllegalStateException a){
+                    System.out.print("");
                 }
             }
-        });
+        );
+        */
         
-        playPause.timeSlider.valueProperty().addListener(new InvalidationListener() {
-            public void invalidated(Observable ov) {
-                if (playPause.timeSlider.isValueChanging()) {
-                    //multiply duration by percentage calculated by slider position
-                    //mediaPlayer.seek(duration.multipliedBy((long) (playPause.timeSlider.getValue() / 100.0)));
-                    //mediaPlayer.seek(duration.multipliedBy(0));
-                }
-            }
-        });
      
-        
         playPause.importFiles.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
@@ -159,37 +181,40 @@ public class MusicPlayer extends Application {
                 //Put the files in a list and add them to the library
                 List<File> list =
                     fileChooser.showOpenMultipleDialog(primaryStage);
-                Song song;
                 
-                
-                if (list != null) {
-                    for (File file : list) {
-                        
-                        //openFile(file);
-                        String fileString = file.toString();
-                        //format string so it can be use as URL
-                        fileString = fileString.replace("\\", "\\\\");
-                        song = new Song(fileString);
-                        
-                        //add the song the library
-                        try{
-                            Library.addSong(song);
-                        }catch(NullPointerException haha){
-                            System.out.print("Error!!!");
-                        }
-                        
-                        //display song on the SongWidget
-                        songWidget.addSong(song);
-                        //add song to an album
-                        addSongToAlbum(song);
-                        
-                    }
-                    
-                }
+                importMusic(list);
+//                Song song;
+//                
+//                
+//                if (list != null) {
+//                    for (File file : list) {
+//                        
+//                        //openFile(file);
+//                        String fileString = file.toString();
+//                        //format string so it can be use as URL
+//                        fileString = fileString.replace("\\", "\\\\");
+//                        song = new Song(fileString);
+//                        
+//                        //add the song the library
+//                        try{
+//                            Library.addSong(song);
+//                        }catch(NullPointerException haha){
+//                            System.out.print("Error!!!");
+//                        }
+//                        
+//                        //display song on the SongWidget
+//                        songWidget.addSong(song);
+//                        //add song to an album
+//                        addSongToAlbum(song);
+//                        
+//                    }
+//                    
+//                }
                 
             }
                 
         });
+        
         
         /*
         This event handler will remove the icon of the play buttun and replave it with the pause button.
@@ -200,14 +225,25 @@ public class MusicPlayer extends Application {
             
             @Override
             public void handle(ActionEvent arg0) {
-                playPause.getChildren().remove(playPause.play);
-                Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
-                playPause.pause.setGraphic(new ImageView(lastIcon));
-                ImageView pauseView = new ImageView(lastIcon);
-                pauseView.setFitWidth(5);
-                pauseView.setFitHeight(5);
-                playPause.add(playPause.pause,1,2);
-                mediaPlayer.play();
+                try{
+                    playPause.getChildren().remove(playPause.play);
+                    Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
+                    playPause.pause.setGraphic(new ImageView(lastIcon));
+                    ImageView pauseView = new ImageView(lastIcon);
+                    pauseView.setFitWidth(5);
+                    pauseView.setFitHeight(5);
+                    playPause.add(playPause.pause,1,2);
+                    mediaPlayer.play();
+                }catch(NullPointerException e){
+                    System.out.print("Null Pointer");
+                    playPause.getChildren().remove(playPause.pause);
+                    Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
+                    playPause.play.setGraphic(new ImageView(lastIcon));
+                    ImageView pauseView = new ImageView(lastIcon);
+                    pauseView.setFitWidth(5);
+                    pauseView.setFitHeight(5);
+                    playPause.add(playPause.play,1,2);
+                }
 
             }
                     
@@ -216,21 +252,37 @@ public class MusicPlayer extends Application {
         playPause.pause.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                System.out.print("Pause");
-                playPause.getChildren().remove(playPause.pause);
-                Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
-                playPause.play.setGraphic(new ImageView(lastIcon));
-                ImageView pauseView = new ImageView(lastIcon);
-                pauseView.setFitWidth(5);
-                pauseView.setFitHeight(5);
-                playPause.add(playPause.play,1,2);
+                try{
+                    
+                    System.out.print("Pause");
+                    playPause.getChildren().remove(playPause.pause);
+                    Image lastIcon = new Image(getClass().getResourceAsStream("playIcon.png"));
+                    playPause.play.setGraphic(new ImageView(lastIcon));
+                    ImageView pauseView = new ImageView(lastIcon);
+                    pauseView.setFitWidth(5);
+                    pauseView.setFitHeight(5);
+                    playPause.add(playPause.play,1,2);
 
-                mediaPlayer.pause();
-                System.out.print("Pause!!!!!!");
+                    mediaPlayer.pause();
+                    System.out.print("Pause!!!!!!");
+                    
+                }catch(NullPointerException e){
+                    
+                    playPause.getChildren().remove(playPause.play);
+                    Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
+                    playPause.pause.setGraphic(new ImageView(lastIcon));
+                    ImageView pauseView = new ImageView(lastIcon);
+                    pauseView.setFitWidth(5);
+                    pauseView.setFitHeight(5);
+                    playPause.add(playPause.pause,1,2);
+                    
+                }
             }
             
         });
-                
+               
+        
+        
         playPause.volume.setOnAction(new EventHandler<ActionEvent>(){
                 @Override
                 public void handle(ActionEvent arg0) {
@@ -307,15 +359,7 @@ public class MusicPlayer extends Application {
                     
         });
         
-        /*
-        mediaPlayer.setOnEndOfMedia(new Runnable() {
-            @Override
-            public void run() {
-                selectSong(songIndex+1);
-            }
-        });
-        */
-        
+       
         playPause.volumeSlider.valueProperty().addListener(new InvalidationListener(){
             public void invalidated(Observable ov) {
                 if (playPause.volumeSlider.isValueChanging()) {
@@ -422,6 +466,41 @@ public class MusicPlayer extends Application {
         media = new Media(new File(song.getId()).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setVolume(playPause.volumeSlider.getValue() / 100.0);
+        
+
+        String len = song.getDuration();
+        Double length = Double.parseDouble(len);
+        playPause.timeSlider.setMax(length);
+        
+        mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                selectSong(index+1);
+            }
+        });
+        
+        mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>(){
+            @Override
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                playPause.timeSlider.setValue(newValue.toMillis());
+            }
+            
+        });
+        
+        playPause.timeSlider.setOnMouseClicked(new ListViewHandler(){
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+            
+                mediaPlayer.seek(Duration.millis(playPause.timeSlider.getValue()));
+                System.out.println("Time changing");
+            }
+            
+        });
+        
+
+
+
         mediaView = new MediaView(mediaPlayer);
         playPause.currentSongDisplay.clear();
         playPause.currentSongDisplay.appendText("Song: " +  song.getTitle() + "\nArtist: " + song.getArtist() + "\nAlbum: " + song.getAlbum());
@@ -430,29 +509,91 @@ public class MusicPlayer extends Application {
     
     public static void selectSong(int index){
         try{
-        mediaPlayer.stop();
-        mediaPlayer = null;
-        System.gc();
+            mediaPlayer.stop();
+            mediaPlayer = null;
+            System.gc();
         }catch(NullPointerException e){
             
         }
+        try{
         songIndex = index;
         Song song = playing.get(index);
 
         media = new Media(new File(song.getId()).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setVolume(playPause.volumeSlider.getValue() / 100.0);
         mediaView = new MediaView(mediaPlayer);
-        playPause.currentSongDisplay.clear();
-        playPause.currentSongDisplay.appendText("Song: " +  song.getTitle() + "\nArtist: " + song.getArtist() + "\nAlbum: " + song.getAlbum());
-
-
+        
+        String len = song.getDuration();
+        Double length = Double.parseDouble(len);
+        playPause.timeSlider.setMax(length);
+        
         mediaPlayer.setOnEndOfMedia(new Runnable() {
             @Override
             public void run() {
                 selectSong(index+1);
             }
         });
+        
+        mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>(){
+            @Override
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                playPause.timeSlider.setValue(newValue.toMillis());
+            }
+            
+        });
+        
+        playPause.timeSlider.setOnMouseClicked(new ListViewHandler(){
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                mediaPlayer.seek(Duration.millis(playPause.timeSlider.getValue()));
+                System.out.println("Time changing");
+            }
+            
+        });
+                
+        playPause.currentSongDisplay.clear();
+        playPause.currentSongDisplay.appendText("Song: " +  song.getTitle() + "\nArtist: " + song.getArtist() + "\nAlbum: " + song.getAlbum());
+
+        }catch (IndexOutOfBoundsException e){
+                
+        }
+
+        
+    }
+    
+    public void importMusic(List<File> list){
+        
+        System.out.print("New method");        
+        Song song;
+                
+                
+        if (list != null) {
+            for (File file : list) {
+
+                //openFile(file);
+                String fileString = file.toString();
+                //format string so it can be use as URL
+                fileString = fileString.replace("\\", "\\\\");
+                song = new Song(fileString);
+
+                //add the song the library
+                try{
+                    Library.addSong(song);
+                }catch(NullPointerException haha){
+                    System.out.print("Error!!!");
+                }
+
+                //display song on the SongWidget
+                songWidget.addSong(song);
+                //add song to an album
+                addSongToAlbum(song);
+
+            }
+
+        }
+        
     }
         
     public void playSong(int index){
@@ -490,27 +631,5 @@ public class MusicPlayer extends Application {
                     MusicPlayer.mediaPlayer.play();
                 
     }
-/*
-    protected void updateValues() {
-    if (playTime != null && playPause.timeSlider != null && playPause.volumeSlider != null && duration != null) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Duration currentTime = mediaPlayer.getCurrentTime();
-                playTime.setText(formatTime(currentTime, duration));
-                playPause.timeSlider.setDisable(duration.isUnknown());
-                if (!playPause.timeSlider.isDisabled() && duration.greaterThan(Duration.ZERO) && !playPause.timeSlider.isValueChanging()) {
-                    playPause.timeSlider.setValue(currentTime.divide(duration).toMillis() * 100.0);
-                    playPause.timeSlider.setValue(currentTime.dividedBy((long)duration).toMillis()*100);
-                }
-                if (!playPause.volumeSlider.isValueChanging()) {
-                    playPause.volumeSlider.setValue((int) Math.round(mediaPlayer.getVolume() * 100));
-                }
-            }
-        });
-    }
-
-}
-*/
 
 }
