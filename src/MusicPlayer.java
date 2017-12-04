@@ -103,10 +103,11 @@ public class MusicPlayer extends Application {
     public void start(Stage primaryStage)
     {
         
-        primaryStage.setTitle("Tabs");
+        primaryStage.setTitle("Elysium Music Player");
         Group root = new Group();
         Scene scene = new Scene(root, 1000, 600);
-
+        primaryStage.getIcons().add(new Image("file:logo.jpg"));
+        
         JFXTabPane tabPane = new JFXTabPane();
         GridPane grid = new GridPane();
         PlayPauseWidget playMenu = new PlayPauseWidget();
@@ -209,6 +210,18 @@ public class MusicPlayer extends Application {
                     //th2.start();
                     
                     TimeUnit.SECONDS.sleep(2);
+                    
+                    Collections.sort(albumToMake, new Comparator<Album>(){
+                        public int compare(Album s1, Album s2) {
+                            return s1.getTitle().compareToIgnoreCase(s2.getTitle());
+                        }
+                    });
+                    
+                    Collections.sort(artistToMake, new Comparator<Artist>(){
+                        public int compare(Artist s1, Artist s2) {
+                            return s1.getName().compareToIgnoreCase(s2.getName());
+                        }
+                    });
                     
                     for(int i = 0; i < albumToMake.size(); i++){
                         
@@ -466,6 +479,7 @@ public class MusicPlayer extends Application {
             }
 
         });
+        
         
         borderPane.prefHeightProperty().bind(scene.heightProperty());
         borderPane.prefWidthProperty().bind(scene.widthProperty());
