@@ -1,11 +1,13 @@
 /*
  * This class dynamically adds ablum art when a new album in a grid
+
  * 
  */
 
 /**
  *
  * @author Japhet
+ * 
  */
 
 package musicplayer;
@@ -42,65 +44,100 @@ public class AlbumArtWidget extends GridPane{
     
      
     int numOfAlbums = 0;
+    
     int x = 0;
+    
     int y = 0;
+    
     Label albumLabel = new Label("");
+    
     Label artistLabel = new Label("");
+    
     JFXButton albumArtWidget = new JFXButton("");
+    
     ScrollPane scrollPane = new ScrollPane();
+    
     GridView g = new GridView();
+    
     ScrollPane sp = new ScrollPane();
+    
     HBox hbox ;
+    
     TilePane tilePane;
+    
     
     
     /*
      * Fomart TilePane for before art work is displayed
      *
      */
+    
     public AlbumArtWidget()
+    
     {
-        //Horizontal
+     
+    	//Horizontal
+    	
         tilePane = new TilePane();
+        
         tilePane.setTileAlignment(Pos.CENTER);
+        
         //tilePane.setPrefRows();
 
         tilePane.setPadding(new Insets (10,10,10,10));
+        
         tilePane.setVgap(10);
+        
         tilePane.setHgap(10);
+        
         
 
         // dont grow more than the preferred number of columns:
+        
         tilePane.setMaxWidth(Double.MAX_VALUE);
+        
         HBox tiles[] = new HBox[100];
+        
         hbox = new HBox();
 
         hbox.setAlignment(Pos.CENTER);
+        
         hbox.getChildren().add(tilePane); 
 
         sp.setFitToHeight(true);
+        
         sp.setFitToWidth(true);
+        
         sp.setContent(hbox);
+        
         add(tilePane,0,0);
         
         
     }
 
     /*
+     * 
      * This Puts the Ablum art work on the screen as well as a label with the album and artist name
      * Art work will come from the Album class
      * @param art
      *
      */
+    
     public void addArtWork(AlbumArt art)
+    
     {
         
             System.out.println("album widet");
+            
             Label label = new Label("albumArt.jpg");
+            
             TilePane.setAlignment(label, Pos.BOTTOM_RIGHT);
+            
             tilePane.getChildren().addAll(art);
+            
         
         
     }
+    
     
 }

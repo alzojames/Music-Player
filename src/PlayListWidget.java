@@ -1,7 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+ * To change this license header, choose License Headers in Project Properties. 
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+ * 
  */
 package musicplayer;
 
@@ -26,22 +27,34 @@ import org.controlsfx.control.cell.ColorGridCell;
 /**
  *
  * @author jndemera2
+ * 
  */
-public class PlayListWidget extends GridPane{
+public class PlayListWidget extends GridPane
+
+{
 
     GridView<Color> myGrid = new GridView<>();
 
+
     public PlayListWidget()
+    
     {
+    	
         //GridView<MenuItem> menuItems = new GridView<>();
+    	
         setPadding(new Insets (10,10,10,10));
+        
         setVgap(10);
+        
         setHgap(10);
         
         GridPane.setHgrow(myGrid, Priority.ALWAYS);
+        
         GridPane.setVgrow(myGrid, Priority.ALWAYS);
         
+        
         for(int i = 0; i < 10000; i++)
+        	
         {
             
             myGrid.getItems().addAll(new Color(i));

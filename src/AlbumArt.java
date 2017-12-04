@@ -1,11 +1,13 @@
 /*
  * This class will create the album artWork
+ *
  * 
  */
 
 /**
  *
  * @author Japhet
+ * 
  */
 
 package musicplayer;
@@ -31,17 +33,27 @@ public class AlbumArt extends GridPane{
     
 
     int numOfAlbums = 0;
+    
     int x = 0;
+    
     int y = 0;
+    
     Label albumLabel;
+    
     Label artistLabel = new Label("");
+    
     JFXButton albumArt = new JFXButton("");
+    
     //ColorGridCell grid = new ColorGridCell();
+    
     GridView g = new GridView();
+    
     
     //GridCell g = new GridCell();
     
+    
     /*
+     * 
      * This Puts the Ablum art work on the screen as well as a label with the album and artistt name
      * Art work will come from the Album class' getArtwork method
      *
@@ -50,43 +62,68 @@ public class AlbumArt extends GridPane{
      * @param artistName
      *
      */
+    
     public AlbumArt(String albumName, String artistName)
+    
     {
         
         setPadding(new Insets (10,10,10,10));
+        
         setVgap(10);
+        
         setHgap(10);
         
+        
         if(albumName == null)
+        	
         {
+        	
             albumName = "Unkown Album";
+            
         }
         
         if(artistName == null)
+        	
         {
+        	
             artistName = "Unkown artist";
+            
         }
-        String label = ""; 
+        
+        String label = "";
+        
         if(albumName.length() >= 15){
+        	
             label = albumName.substring(0,15) + "...";
+            
         }else{
+        	
             label = albumName;
+            
         }
+        
         /*
          * Get the image (artwork), put it in the imageView and put that on the button
          * then set the size
          * Size may have to be variable in the the case that the window grows or skrinks
+         * 
          */
         Image image = new Image(getClass().getResourceAsStream("albumArt.jpg"));
+        
         ImageView imageView = new ImageView(image);
+        
 
         imageView.setFitWidth(125);
+        
         imageView.setFitHeight(125);
+        
 
         albumArt.setGraphic(imageView);
+        
         albumLabel = new Label(label + "\n" + artistName);
 
         add(albumArt,0,0);
+        
         add(albumLabel,0,1);
 
         x++;
@@ -94,31 +131,45 @@ public class AlbumArt extends GridPane{
         final String name = albumName;
 
         /**
+         * 
          * Allows the user to access a page containing album songs
          *
          */
+        
         albumArt.setOnAction(new EventHandler<ActionEvent>()
+        
         {
             
             @Override
+            
             public void handle(ActionEvent arg0)
+            
             {
                 
                Album album = Library.albums.get(name);
+               
                ArrayList<Song> songs = album.getSongs();
+               
                IndividualAlbumWidget widget ;
+               
                MusicPlayer.albumTab.setContent(widget = new IndividualAlbumWidget());
                
                for(int i = 0; i < songs.size(); i++)
+            	   
                {
                    System.out.println(songs.get(i).getTitle());
+                   
                    widget.addSong(songs.get(i));
+                   
                }
 
             }
                     
-        });
+        }
+        
+        		);
 
     }
+    
     
 }
