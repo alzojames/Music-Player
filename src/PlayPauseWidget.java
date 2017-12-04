@@ -11,7 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.JFXTextArea;
 import java.io.File;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -59,7 +61,8 @@ public class PlayPauseWidget extends GridPane{
     double height;
     MediaView mediaView;
     //JFXLabel currentSongDisplay = new JFXLabel("Current song");
-    public  PlayPauseWidget(){
+    public  PlayPauseWidget()
+    {
         
         lib = new Library();
         play = new JFXButton("");
@@ -134,7 +137,7 @@ public class PlayPauseWidget extends GridPane{
         add(volumeSlider,8,2);
         //add(importFiles,9,2);
         
-
+        timeSlider.setDisable(true);
         timeSlider.setMaxWidth(Double.MAX_VALUE);
         setHgrow(timeSlider, Priority.ALWAYS);
         
@@ -148,10 +151,12 @@ public class PlayPauseWidget extends GridPane{
         This event handler will play the previous track
         As of now it's being used to test if the getmetaData method works
         */
-        last.setOnAction(new EventHandler<ActionEvent>() {
+        last.setOnAction(new EventHandler<ActionEvent>()
+        {
             
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
 
             }
         });
@@ -160,41 +165,52 @@ public class PlayPauseWidget extends GridPane{
         This event handler will play the previous track
         As of now it's being used to test if the getmetaData method works
         */
-        next.setOnAction(new EventHandler<ActionEvent>() {
+        next.setOnAction(new EventHandler<ActionEvent>()
+        {
             
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 System.out.print("Working");
             }
         });
 
-    
     }
     
-    public void updateValues() {
+    public void updateValues()
+    {
         
-            Platform.runLater(new Runnable() {
-                public void run() {
+            Platform.runLater(new Runnable()
+            {
+
+                public void run()
+                {
+
                     Duration currentTime = MusicPlayer.mediaPlayer.getCurrentTime();
                     //playTime.setText(formatTime(currentTime, duration));
                     //timeSlider.setDisable(duration.isUnknown());
                     if (!timeSlider.isDisabled()
                             && duration.greaterThan(Duration.ZERO)
-                            && !timeSlider.isValueChanging()) {
+                            && !timeSlider.isValueChanging())
+                    {
                         timeSlider.setValue(currentTime.divide(duration).toMillis()
                                 * 100.0);
                     }
-                    if (!volumeSlider.isValueChanging()) {
+                    if (!volumeSlider.isValueChanging())
+                    {
                         volumeSlider.setValue((int) Math.round(MusicPlayer.mediaPlayer.getVolume()
                                 * 100));
                     }
+
                 }
+
             });
         
     }
     
     //This updates the info about the currrntly playing song
-    public void updatecurrentSongDisplay(String song, String Artist, String Album){
+    public void updatecurrentSongDisplay(String song, String Artist, String Album)
+    {
         currentSongDisplay.clear();
         currentSongDisplay.appendText("Song: " +  song + "\nArtist: " + Artist + "\nAlbum: " + Album);
     }

@@ -28,8 +28,11 @@ import org.controlsfx.control.cell.ColorGridCell;
  * @author jndemera2
  */
 public class PlayListWidget extends GridPane{
+
     GridView<Color> myGrid = new GridView<>();
-    public PlayListWidget(){
+
+    public PlayListWidget()
+    {
         //GridView<MenuItem> menuItems = new GridView<>();
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
@@ -38,11 +41,15 @@ public class PlayListWidget extends GridPane{
         GridPane.setHgrow(myGrid, Priority.ALWAYS);
         GridPane.setVgrow(myGrid, Priority.ALWAYS);
         
-        for(int i = 0; i < 10000; i++) {
+        for(int i = 0; i < 10000; i++)
+        {
             
             myGrid.getItems().addAll(new Color(i));
 
         }
+
         add(myGrid,0,0);
+        
     }
+
 }

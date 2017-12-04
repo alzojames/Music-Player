@@ -12,7 +12,8 @@ package musicplayer;
 public class setOnCompletionListener implements Runnable{
 
     @Override
-    public void run() {
+    public void run()
+    {
         System.out.print("maybe");
     }
     

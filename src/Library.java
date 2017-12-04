@@ -1,5 +1,3 @@
-package musicplayer;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,8 +8,16 @@ package musicplayer;
  *
  * @author Japhet
  */
-import java.io.*;
 
+package musicplayer;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -20,10 +26,11 @@ import org.apache.tika.parser.mp3.Mp3Parser;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import java.util.*;
+
 import musicplayer.Album;
 
 public class Library {
+    
     private static  String ID = "id";
     private static  String title = "title";
     private static  String artist = "artist";
@@ -49,47 +56,52 @@ public class Library {
     This method uses the Apche Tika library to get the metadata from the files and
     store them in the fields
     */
-    public String[] getmetaData(String fileLocation){
-         //String fileLocation = "C:\\Users\\ndeme\\Documents\\New folder\\test.mp3";
-         String metaData[] = new String[3];
-        try {
+    public String[] getmetaData(String fileLocation)
+    {
 
-        InputStream input = new FileInputStream(new File(fileLocation));
-        ContentHandler handler = new DefaultHandler();
-        Metadata metadata = new Metadata();
-        Parser parser = new Mp3Parser();
-        ParseContext parseCtx = new ParseContext();
-        parser.parse(input, handler, metadata, parseCtx);
-        input.close();
+        String metaData[] = new String[3];
+        try
+        {
 
-        // List all metadata
-        String[] metadataNames = metadata.names();
-        
-        // Retrieve the necessary info from metadata
-        // Names - title, xmpDM:artist etc. - mentioned below may differ based
-        char k = 'l';
-        title = metadata.get("title");
-        artist = metadata.get("xmpDM:artist");
-        composer = metadata.get("xmpDM:composer");
-        genre = metadata.get("xmpDM:genre");
-        album = metadata.get("xmpDM:album");
-        
-        for(int i = 0; i < metaData.length; i++){
+            InputStream input = new FileInputStream(new File(fileLocation));
+            ContentHandler handler = new DefaultHandler();
+            Metadata metadata = new Metadata();
+            Parser parser = new Mp3Parser();
+            ParseContext parseCtx = new ParseContext();
+            parser.parse(input, handler, metadata, parseCtx);
+            input.close();
+
+            // List all metadata
+            String[] metadataNames = metadata.names();
             
-            switch (i){
-                case 0: metaData[i] = title;
-                        break;
-                case 1: metaData[i] = artist;
-                        break;
-                case 2: metaData[i] = album;
-                        break;
-            }
-        }
-         
-        return metaData;
-        //System.out.println("Title: " + title + "\nArtist: " + artist + "\nComposer: " + composer + "\nGenre: " + genre + "\nAlbum: " +album);
+            // Retrieve the necessary info from metadata
+            // Names - title, xmpDM:artist etc. - mentioned below may differ based
+            char k = 'l';
+            title = metadata.get("title");
+            artist = metadata.get("xmpDM:artist");
+            composer = metadata.get("xmpDM:composer");
+            genre = metadata.get("xmpDM:genre");
+            album = metadata.get("xmpDM:album");
+            
+            for(int i = 0; i < metaData.length; i++)
+            {
                 
-        } catch (FileNotFoundException e) {
+                switch (i)
+                {
+                    case 0: metaData[i] = title;
+                            break;
+                    case 1: metaData[i] = artist;
+                            break;
+                    case 2: metaData[i] = album;
+                            break;
+                }
+
+            }
+             
+            return metaData;
+            //System.out.println("Title: " + title + "\nArtist: " + artist + "\nComposer: " + composer + "\nGenre: " + genre + "\nAlbum: " +album);
+                
+        } catch (FileNotFoundException e){
         e.printStackTrace();
         } catch (IOException e) {
         e.printStackTrace();
@@ -100,10 +112,12 @@ public class Library {
         }
         
         return metaData;
+
     }
     
     //put new songs in the library
-    public static void addSong(Song song){
+    public static void addSong(Song song)
+    {
        songs.add(song); 
 
     }

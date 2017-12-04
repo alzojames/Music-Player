@@ -1,13 +1,8 @@
 /*
- * This class will create the album artWork
- * 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-
-/**
- *
- * @author Japhet
- */
-
 package musicplayer;
 
 import com.jfoenix.controls.JFXButton;
@@ -26,9 +21,11 @@ import static org.apache.tika.mime.MediaType.*;
 import org.controlsfx.control.*;
 import org.controlsfx.control.cell.ColorGridCell;
 
-
-public class AlbumArt extends GridPane{
-    
+/**
+ *
+ * @author jndemera2
+ */
+public class ArtistPic extends GridPane{
 
     int numOfAlbums = 0;
     int x = 0;
@@ -48,7 +45,7 @@ public class AlbumArt extends GridPane{
      * @param artistName
      *
      */
-    public AlbumArt(String albumName, String artistName)
+    public ArtistPic(String albumName, String artistName)
     {
         
         setPadding(new Insets (10,10,10,10));
@@ -111,7 +108,7 @@ public class AlbumArt extends GridPane{
             }
                     
         });
-
+        
     }
     
 }

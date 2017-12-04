@@ -1,14 +1,15 @@
 /*
- * This class will create the album artWork
- * 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
+package musicplayer;
 
 /**
  *
- * @author Japhet
+ * @author jndemera2
  */
 
-package musicplayer;
 
 import com.jfoenix.controls.JFXButton;
 import java.util.ArrayList;
@@ -27,8 +28,18 @@ import org.controlsfx.control.*;
 import org.controlsfx.control.cell.ColorGridCell;
 
 
-public class AlbumArt extends GridPane{
-    
+/*
+ * This class will create the album artWork
+ * 
+ */
+
+/**
+ *
+ * @author Japhet
+ */
+
+
+   public class ArtistArtWork extends GridPane{ 
 
     int numOfAlbums = 0;
     int x = 0;
@@ -48,17 +59,13 @@ public class AlbumArt extends GridPane{
      * @param artistName
      *
      */
-    public AlbumArt(String albumName, String artistName)
+    public ArtistArtWork(String artistName)
     {
         
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
         setHgap(10);
         
-        if(albumName == null)
-        {
-            albumName = "Unkown Album";
-        }
         
         if(artistName == null)
         {
@@ -70,21 +77,21 @@ public class AlbumArt extends GridPane{
          * then set the size
          * Size may have to be variable in the the case that the window grows or skrinks
          */
-        Image image = new Image(getClass().getResourceAsStream("albumArt.jpg"));
+        Image image = new Image(getClass().getResourceAsStream("artist.png"));
         ImageView imageView = new ImageView(image);
 
         imageView.setFitWidth(125);
         imageView.setFitHeight(125);
 
         albumArt.setGraphic(imageView);
-        albumLabel = new Label(albumName + "\n" + artistName);
+        albumLabel = new Label(artistName);
 
         add(albumArt,0,0);
         add(albumLabel,0,1);
 
         x++;
         
-        final String name = albumName;
+        final String name = artistName;
 
         /**
          * Allows the user to access a page containing album songs
@@ -112,6 +119,6 @@ public class AlbumArt extends GridPane{
                     
         });
 
-    }
+    }    
     
 }

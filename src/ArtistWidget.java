@@ -3,7 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+/**
+ *
+ * @author jndemera2
+ */
+
 package musicplayer;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
@@ -15,16 +22,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import static org.apache.tika.mime.MediaType.*;
 import org.controlsfx.control.*;
 import org.controlsfx.control.cell.ColorGridCell;
-/**
- *
- * @author jndemera2
- */
+
 public class ArtistWidget extends GridPane{
     Label albumLabel = new Label("Album Name\nArtist Name");
     Label artistLabel = new Label("Album Name\nArtist Name");
@@ -56,9 +61,9 @@ public class ArtistWidget extends GridPane{
         add(albumArt,0,0);
         add(albumLabel,0,1);
 
-        //Region r = new Region();
-        //GridPane.setHgrow(r, Priority.ALWAYS);
-        //GridPane.setVgrow(r, Priority.ALWAYS);
+        Region r = new Region();
+        GridPane.setHgrow(r, Priority.ALWAYS);
+        GridPane.setVgrow(r, Priority.ALWAYS);
         
         GridPane.setHgrow(list, Priority.ALWAYS);
         GridPane.setVgrow(list, Priority.ALWAYS);
@@ -68,7 +73,8 @@ public class ArtistWidget extends GridPane{
         
     }
         
-    public void addSong(Song song){
+    public void addSong(Song song)
+    {
 
         albumText = new Text(song.getAlbum());
         artistText = new Text(song.getArtist());

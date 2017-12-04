@@ -11,9 +11,13 @@ package musicplayer;
  * @author jndemera2
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import java.io.*;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;

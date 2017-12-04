@@ -18,7 +18,8 @@ class ListViewHandler implements EventHandler<MouseEvent> {
 
 
     @Override
-    public void handle(MouseEvent event) {
+    public void handle(MouseEvent event) 
+    {
         System.out.print("Something worked");
     }
 }

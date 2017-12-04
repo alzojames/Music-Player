@@ -1,3 +1,13 @@
+/*
+ * This class dynamically adds ablum art when a new album in a grid
+ * 
+ */
+
+/**
+ *
+ * @author Japhet
+ */
+
 package musicplayer;
 
 import com.jfoenix.controls.JFXButton;
@@ -21,20 +31,14 @@ import org.controlsfx.control.*;
 import org.controlsfx.control.cell.ColorGridCell;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
- import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author Japhet
- */
-public class AlbumArtWidget extends TilePane{
+public class AlbumArtWidget extends GridPane{
     
      
     int numOfAlbums = 0;
@@ -44,33 +48,59 @@ public class AlbumArtWidget extends TilePane{
     Label artistLabel = new Label("Album Name\nArtist Name");
     JFXButton albumArtWidget = new JFXButton("");
     ScrollPane scrollPane = new ScrollPane();
-    //ColorGridCell grid = new ColorGridCell();
     GridView g = new GridView();
+    ScrollPane sp = new ScrollPane();
+    HBox hbox ;
+    TilePane tilePane;
     
-    //GridCell g = new GridCell();
     
     /*
-    This Puts the Ablum art work on the screen as well as a label with the album and artistt name
-    Art work will come from the Album class' getArtwork method
-    */
-    public AlbumArtWidget() {
-           
-        setPadding(new Insets (10,10,10,10));
-        setVgap(10);
-        setHgap(10);
-       getChildren().addAll();
+     * Fomart TilePane for before art work is displayed
+     *
+     */
+    public AlbumArtWidget()
+    {
+        //Horizontal
+        tilePane = new TilePane(Orientation.HORIZONTAL);
+        tilePane.setTileAlignment(Pos.CENTER_LEFT);
+        tilePane.setPrefRows(5);
 
+        tilePane.setPadding(new Insets (10,10,10,10));
+        tilePane.setVgap(10);
+        tilePane.setHgap(10);
+        
+
+        // dont grow more than the preferred number of columns:
+        //tilePane.setMaxWidth(Double.MAX_VALUE);
+        HBox tiles[] = new HBox[100];
+        hbox = new HBox();
+
+        hbox.setAlignment(Pos.CENTER);
+        hbox.getChildren().add(tilePane); 
+
+        sp.setFitToHeight(true);
+        sp.setFitToWidth(true);
+        sp.setContent(hbox);
+        add(tilePane,0,0);
+        
+        
     }
-    public void addArtWork(AlbumArt art){
+
+    /*
+     * This Puts the Ablum art work on the screen as well as a label with the album and artist name
+     * Art work will come from the Album class
+     * @param art
+     *
+     */
+    public void addArtWork(AlbumArt art)
+    {
         
             System.out.println("album widet");
             Label label = new Label("albumArt.jpg");
-            //Image image = new Image(getClass().getResourceAsStream("albumArt.jpg"))
-            //ImageView imageview = new ImageView(new Image("albumArt.jpg"));
-            //AlbumArt art = new AlbumArt();
             TilePane.setAlignment(label, Pos.BOTTOM_RIGHT);
-            getChildren().addAll(art);
-
+            tilePane.getChildren().addAll(art);
+        
         
     }
+    
 }
