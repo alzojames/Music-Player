@@ -1,3 +1,21 @@
+package musicplayer;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import static org.apache.tika.mime.MediaType.*;
+import org.controlsfx.control.*;
+import org.controlsfx.control.cell.ColorGridCell;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,35 +26,7 @@
  *
  * @author jndemera2
  */
-
-package musicplayer;
-
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
-import java.util.ArrayList;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import static musicplayer.MusicPlayer.playPause;
-import static org.apache.tika.mime.MediaType.*;
-import org.controlsfx.control.*;
-import org.controlsfx.control.cell.ColorGridCell;
-
-
 public class IndividualAlbumWidget extends GridPane{
-
     Label albumLabel = new Label("Album Name\nArtist Name");
     Label artistLabel = new Label("Album Name\nArtist Name");
     Text albumText;
@@ -47,9 +37,7 @@ public class IndividualAlbumWidget extends GridPane{
     ObservableList<String> items = FXCollections.observableArrayList();
     ObservableList<Song> songs = FXCollections.observableArrayList();
     
-    public IndividualAlbumWidget()
-    {
-
+    public IndividualAlbumWidget() {
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
         setHgap(10);
@@ -68,35 +56,29 @@ public class IndividualAlbumWidget extends GridPane{
         add(albumArt,0,0);
         add(albumLabel,0,1);
 
-        Region r = new Region();
-        GridPane.setHgrow(r, Priority.ALWAYS);
-        GridPane.setVgrow(r, Priority.ALWAYS);
+        //Region r = new Region();
+        //GridPane.setHgrow(r, Priority.ALWAYS);
+        //GridPane.setVgrow(r, Priority.ALWAYS);
         
         GridPane.setHgrow(list, Priority.ALWAYS);
         GridPane.setVgrow(list, Priority.ALWAYS);
         items.add(String.format("%-80s \t%-30s \t%-20s", "Title","Artist","Album"));
         list.setItems(items);
         add(list,2,2);
-        
-        albumArt.setOnAction(new EventHandler<ActionEvent>()
-        {
-            
-            @Override
-            public void handle(ActionEvent arg0)
-            {
-                
-                MusicPlayer.albumTab.setContent(MusicPlayer.sp);
-            }
-                    
-        });
-
     }
-    
-        public void addSong(Song song)
-        {
+    		/**
+    		 * Adds the album name and artist name, sets the font and postion of the text. Adds the song to the album and sets the format for the string of text (Title, Artist name, and Album name) 
+    		 * 
+    		 * @param song
+    		 * 
+    		 * @param albumName
+    		 * 
+    		 * @param artistName
+    		 */
+        public void addSong(Song song, String albumName, String artistName){
 
-        albumText = new Text(song.getAlbum());
-        artistText = new Text(song.getArtist());
+        albumText = new Text(albumName);
+        artistText = new Text(artistName);
         
         albumText.setFont(Font.font ("Verdana", 20));
         add(albumText,2,0);
@@ -106,51 +88,5 @@ public class IndividualAlbumWidget extends GridPane{
         items.add(String.format("%-80s%-30s%-20s", song.getTitle(),song.getArtist(),song.getAlbum()));
         list.setItems(items);
         
-
-        list.setOnMouseClicked(new ListViewHandler()
-        {
-
-            @Override
-            public void handle(javafx.scene.input.MouseEvent event)
-            {
-
-                System.out.print("Something worked");
-                int x = list.getSelectionModel().getSelectedIndex()-1;
-                System.out.println(x);
-
-                Album album = Library.albums.get(song.getAlbum());
-                ArrayList<Song> songs = album.getSongs();
-                MusicPlayer.selectSong(x,songs);
-                MusicPlayer.songIndex = x;
-                
-                try
-                {
-
-                    playPause.getChildren().remove(playPause.play);
-
-                }catch(IllegalArgumentException e){
-                    System.out.print("Unable to remove button");
-                }
-                
-                Image lastIcon = new Image(getClass().getResourceAsStream("pauseIcon.png"));
-                playPause.pause.setGraphic(new ImageView(lastIcon));
-                ImageView pauseView = new ImageView(lastIcon);
-                pauseView.setFitWidth(5);
-                pauseView.setFitHeight(5);
-                
-                try
-                {
-
-                    playPause.add(playPause.pause,1,2);
-
-                }catch(IllegalArgumentException a){
-                    System.out.print("Unable to put button");
-                }
-
-            }
-            
-        });
-
     }
-    
 }

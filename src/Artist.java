@@ -1,17 +1,6 @@
-/*
- * This class dynamically adds ablum art when a new album in a grid
- * 
- */
-
-/**
- *
- * @author Japhet
- */
-
 package musicplayer;
-
 import java.awt.Image;
-import java.util.HashSet;
+import java.util.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import musicplayer.Album;
@@ -25,15 +14,16 @@ public final class Artist implements Comparable<Artist> {
 
     /**
      * Constructor for the Artist class.
+     * 
      * Creates an artist object and obtains the artist artwork.
      *
      * @param name Artist name
+     * 
+     * @param albums List of artist albums
      */
-    public Artist(String name)
-    {
+    public Artist(String name) {
 
-        if(name == null)
-        {
+        if(name == null){
             this.name = "Unkown";
         }else{
             this.name = name;
@@ -41,73 +31,71 @@ public final class Artist implements Comparable<Artist> {
         
         artistWidget = new ArtistWidget();
         this.artistImageProperty = new SimpleObjectProperty<>(getArtistImage());
-
     }
 
     /**
      * Gets the artist title.
+     * 
      * @return artist title
      */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
     /**
      * Gets array list of artist albums
+     * 
      * @return artist albums
      */
-
     //public ArrayList<Album> getAlbums() {
       //  return new ArrayList<>(this.albums);
     //}
 
-    public ObjectProperty<Image> artistImageProperty()
-    {
+    public ObjectProperty<Image> artistImageProperty() {
         return this.artistImageProperty;
     }
 
     /**
      * Gets images for artists
+     * 
      * @return artist image
      */
-    public Image getArtistImage()
-    {
+    public Image getArtistImage() {
         return null;
         //gets Image of the artist for the gui
     }
 
-    public void downloadArtistImage()
-    {
+    public void downloadArtistImage() {
         
     }
-
-    private String removeArticle(String title)
-    {
+    /**
+     * Removes articles( "a", "an" and "the") from album titles
+     * 
+     * @return null
+     */
+    private String removeArticle(String title) {
         return null;
         //removes "a", "an" and "the" from the name of the artist
         
     }
 
     @Override
-    public int compareTo(Artist o)
-    {
-        return 0;
+    public int compareTo(Artist o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    public static void addAlbums(Album album)
-    {
+    /**
+     * 
+     */
+    public static void addAlbums(Album album){
         albums.add(album); 
         
     }
     
-    public void addSong(Song song)
-    {
+    public void addSong(Song song){
         artistWidget.addSong(song);
     } 
     
-    public ArtistWidget getArtistWidget()
-    {
+    public ArtistWidget getArtistWidget(){
         return artistWidget;
     }
     

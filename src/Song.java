@@ -11,13 +11,9 @@ package musicplayer;
  * @author jndemera2
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import java.io.*;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -27,7 +23,6 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import javafx.scene.media.*;
-import javafx.util.Duration;
 
 public class Song
 {
@@ -71,9 +66,7 @@ public class Song
             composer = metadata.get("xmpDM:composer");
             genre = metadata.get("xmpDM:genre");
             album = metadata.get("xmpDM:album");
-            duration = metadata.get("xmpDM:duration");
 
-            System.out.print(duration);
             if(title == null){
                 title = "Unkown";
             }
@@ -123,37 +116,63 @@ public class Song
 
 
     }
+    /**
+     * Gets title
+     *
+     * @return title
+     */
     public String getTitle(){
         return title;
     }
+    /**
+     * Gets artist name
+     *
+     * @return artist name
+     */	
     public String getArtist(){
         return artist;
     }
+    /**
+     * Gets album name
+     * 
+     * @return album name
+     */
     public String getAlbum(){
         return album;
     }
-    
+    /**
+     * Gets album ID.
+     *
+     * @return album ID
+     */
     public String getId(){
         return id;
     }
+    /**
+     * Sets the title for the song from the metadata
+     */
     public void setTitle(String Title){
         this.title =  Title;
     }
-
+    /**
+     * Sets the artist name for the song from the metadata
+     */
     public void setArtist(String newArtist){
         this.artist =  newArtist;
     }
-    
+    /**
+     *  Sets the album name for the song from the metadata
+     */
     public void setAlbum(String newAlbum){
         this.album =  newAlbum;
     }
-
+    /**
+     *  Sets the format for the display of song information( title, artist and album) 
+     * 
+     * @return String.format
+     */
     public String toString()
     {
         return String.format("%-80s \t%-30s \t%-20s", getTitle(),getArtist(),getAlbum());
-    }
-
-    public String getDuration() {
-        return duration;
     }
 }
