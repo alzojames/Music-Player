@@ -27,18 +27,6 @@ import static org.apache.tika.mime.MediaType.*;
 import org.controlsfx.control.*;
 import org.controlsfx.control.cell.ColorGridCell;
 
-
-/*
- * This class will create the album artWork
- * 
- */
-
-/**
- *
- * @author Japhet
- */
-
-
    public class ArtistArtWork extends GridPane{ 
 
     int numOfAlbums = 0;
@@ -46,7 +34,7 @@ import org.controlsfx.control.cell.ColorGridCell;
     int y = 0;
     Label albumLabel;
     Label artistLabel = new Label("Album Name\nArtist Name");
-    JFXButton albumArt = new JFXButton("");
+    JFXButton art = new JFXButton("");
     //ColorGridCell grid = new ColorGridCell();
     GridView g = new GridView();
     
@@ -56,6 +44,7 @@ import org.controlsfx.control.cell.ColorGridCell;
      * This Puts the Ablum art work on the screen as well as a label with the album and artistt name
      * Art work will come from the Album class' getArtwork method
      * @param albumName
+     *
      * @param artistName
      *
      */
@@ -65,7 +54,7 @@ import org.controlsfx.control.cell.ColorGridCell;
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
         setHgap(10);
-        
+        System.out.println("Making artist art work");
         
         if(artistName == null)
         {
@@ -77,18 +66,19 @@ import org.controlsfx.control.cell.ColorGridCell;
          * then set the size
          * Size may have to be variable in the the case that the window grows or skrinks
          */
-        Image image = new Image(getClass().getResourceAsStream("artist.png"));
+        Image image = new Image(getClass().getResourceAsStream("Artist.png"));
         ImageView imageView = new ImageView(image);
 
         imageView.setFitWidth(125);
         imageView.setFitHeight(125);
 
-        albumArt.setGraphic(imageView);
+        art.setGraphic(imageView);
         albumLabel = new Label(artistName);
 
-        add(albumArt,0,0);
+        add(art,0,0);
         add(albumLabel,0,1);
 
+        System.out.println("Artist art work made");
         x++;
         
         final String name = artistName;
@@ -97,17 +87,37 @@ import org.controlsfx.control.cell.ColorGridCell;
          * Allows the user to access a page containing album songs
          *
          */
-        albumArt.setOnAction(new EventHandler<ActionEvent>()
+        art.setOnAction(new EventHandler<ActionEvent>()
         {
             
             @Override
             public void handle(ActionEvent arg0)
             {
                 
-               Album album = Library.albums.get(name);
-               ArrayList<Song> songs = album.getSongs();
-               IndividualAlbumWidget widget ;
-               MusicPlayer.albumTab.setContent(widget = new IndividualAlbumWidget());
+                Artist artist = 
+                       Library.artists.get(name);
+               
+                HashSet<Album> albums 
+                       = artist.albums;
+               
+                ArrayList<Song> songs 
+                       = new ArrayList<Song>();
+               
+                for (Album a : albums) {
+                    
+                    System.out.println(a.getTitle());
+                    ArrayList<Song> newAlbum = a.getSongs();
+                    
+                    for(int i = 0; i < newAlbum.size(); i++){
+                        songs.add(newAlbum.get(i));
+                    }
+                    
+                }
+               
+               Widget widget ;
+               
+               MusicPlayer.artistTab.setContent(widget 
+                       = new Widget());
                
                for(int i = 0; i < songs.size(); i++)
                {

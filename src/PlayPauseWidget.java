@@ -73,7 +73,7 @@ public class PlayPauseWidget extends GridPane{
         volume = new JFXButton("");
         volumeSlider = new JFXSlider();
         timeSlider = new JFXSlider();
-        importFiles = new JFXButton("Import");
+        importFiles = new JFXButton("");
     
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
@@ -116,12 +116,19 @@ public class PlayPauseWidget extends GridPane{
         nextView.setFitWidth(5);
         nextView.setFitHeight(5);
         
+        Image importIcon = new Image(getClass().getResourceAsStream("icon.png"));
+        importFiles.setGraphic(new ImageView(importIcon));
+        ImageView importView = new ImageView(lastIcon);
+        importView.setFitWidth(1);
+        importView.setFitHeight(1);
+        
         Image volumeIcon = new Image(getClass().getResourceAsStream("volumeIcon.png"));
         volume.setGraphic(new ImageView(volumeIcon));
         ImageView volumeView = new ImageView(lastIcon);
         volumeView.setFitWidth(5);
         volumeView.setFitHeight(5);
-        //setHgrow(timeSlider, Priority.ALWAYS);
+        setHgrow(timeSlider, Priority.ALWAYS);
+        
         /*
         Add the elements on to the gridPane 
         */

@@ -55,7 +55,7 @@ public class SongWidget extends GridPane
     JFXListView<String> list = new JFXListView<String>();
     ObservableList<String> items = FXCollections.observableArrayList();
     ObservableList<Song> songs = FXCollections.observableArrayList();
-   // ListAdapter adapter;
+    // ListAdapter adapter;
     
     public SongWidget()
     {

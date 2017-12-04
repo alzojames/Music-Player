@@ -34,7 +34,7 @@ public class AlbumArt extends GridPane{
     int x = 0;
     int y = 0;
     Label albumLabel;
-    Label artistLabel = new Label("Album Name\nArtist Name");
+    Label artistLabel = new Label("");
     JFXButton albumArt = new JFXButton("");
     //ColorGridCell grid = new ColorGridCell();
     GridView g = new GridView();
@@ -44,7 +44,9 @@ public class AlbumArt extends GridPane{
     /*
      * This Puts the Ablum art work on the screen as well as a label with the album and artistt name
      * Art work will come from the Album class' getArtwork method
+     *
      * @param albumName
+     *
      * @param artistName
      *
      */
@@ -64,7 +66,12 @@ public class AlbumArt extends GridPane{
         {
             artistName = "Unkown artist";
         }
-        
+        String label = ""; 
+        if(albumName.length() >= 15){
+            label = albumName.substring(0,15) + "...";
+        }else{
+            label = albumName;
+        }
         /*
          * Get the image (artwork), put it in the imageView and put that on the button
          * then set the size
@@ -77,7 +84,7 @@ public class AlbumArt extends GridPane{
         imageView.setFitHeight(125);
 
         albumArt.setGraphic(imageView);
-        albumLabel = new Label(albumName + "\n" + artistName);
+        albumLabel = new Label(label + "\n" + artistName);
 
         add(albumArt,0,0);
         add(albumLabel,0,1);

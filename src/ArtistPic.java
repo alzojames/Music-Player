@@ -45,17 +45,13 @@ public class ArtistPic extends GridPane{
      * @param artistName
      *
      */
-    public ArtistPic(String albumName, String artistName)
+    public ArtistPic(String artistName)
     {
         
         setPadding(new Insets (10,10,10,10));
         setVgap(10);
         setHgap(10);
         
-        if(albumName == null)
-        {
-            albumName = "Unkown Album";
-        }
         
         if(artistName == null)
         {
@@ -74,14 +70,14 @@ public class ArtistPic extends GridPane{
         imageView.setFitHeight(125);
 
         albumArt.setGraphic(imageView);
-        albumLabel = new Label(albumName + "\n" + artistName);
+        albumLabel = new Label(artistName);
 
         add(albumArt,0,0);
         add(albumLabel,0,1);
 
         x++;
         
-        final String name = albumName;
+        final String name = artistName;
 
         /**
          * Allows the user to access a page containing album songs

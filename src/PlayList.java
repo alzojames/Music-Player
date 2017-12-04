@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package musicplayer;
-import java.util.*;
+
+import java.util.ArrayList;
+
 /**
  *
  * @author Japhet
@@ -14,58 +16,45 @@ public class PlayList {
     private String title;
     private ArrayList<Song> songs;
     
-    /**
-     * Constructor for the Playlist class.
-     * 
-     * Creates a playlist object and obtains the songs
-     * 
-     * @param id
-     * 
-     * @param title
-     * 
-     * @param songs
-     */
+    //Constructor for the Playlist class.
 
-    public PlayList(int id, String title, ArrayList<Song> songs) {
+    public PlayList(int id, String title, ArrayList<Song> songs)
+    {
         this.id = id;
         this.title = title;
         this.songs = songs;
     }
-    /**
-     * Gets album ID.
-     *
-     * @return album ID
-     */
-    public int getId() {
+
+    public int getId()
+    {
         return this.id;
     }
-    /**
-     * Gets title
-     *
-     * @return title
-     */
-    public String getTitle() {
+
+    public String getTitle()
+    {
         return this.title;
     }
-    /**
-     * Gets a list of songs
-     * 
-     * @return song list
-     */
-    public ArrayList<Song> getSongs() {
+
+
+    public ArrayList<Song> getSongs()
+    {
         return songs;
     }
     
-    public void addSong(Song song) {
+    public void addSong(Song song)
+    {
     	//adds a song to a playlist
     }
     
-    public void removeSong(int songId) {
+    public void removeSong(int songId)
+    {
       //remove song from playlist
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return this.title;
     }
+    
 }

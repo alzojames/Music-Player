@@ -44,8 +44,8 @@ public class AlbumArtWidget extends GridPane{
     int numOfAlbums = 0;
     int x = 0;
     int y = 0;
-    Label albumLabel = new Label("Album Name\nArtist Name");
-    Label artistLabel = new Label("Album Name\nArtist Name");
+    Label albumLabel = new Label("");
+    Label artistLabel = new Label("");
     JFXButton albumArtWidget = new JFXButton("");
     ScrollPane scrollPane = new ScrollPane();
     GridView g = new GridView();
@@ -61,9 +61,9 @@ public class AlbumArtWidget extends GridPane{
     public AlbumArtWidget()
     {
         //Horizontal
-        tilePane = new TilePane(Orientation.HORIZONTAL);
-        tilePane.setTileAlignment(Pos.CENTER_LEFT);
-        tilePane.setPrefRows(5);
+        tilePane = new TilePane();
+        tilePane.setTileAlignment(Pos.CENTER);
+        //tilePane.setPrefRows();
 
         tilePane.setPadding(new Insets (10,10,10,10));
         tilePane.setVgap(10);
@@ -71,7 +71,7 @@ public class AlbumArtWidget extends GridPane{
         
 
         // dont grow more than the preferred number of columns:
-        //tilePane.setMaxWidth(Double.MAX_VALUE);
+        tilePane.setMaxWidth(Double.MAX_VALUE);
         HBox tiles[] = new HBox[100];
         hbox = new HBox();
 

@@ -24,6 +24,8 @@ import java.io.File;
 import static java.lang.Math.log;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -77,6 +79,7 @@ public class MusicPlayer extends Application {
     //ArtistWidget artistWidget;
 
     static ScrollPane sp = new ScrollPane();
+    static ScrollPane sp2 = new ScrollPane();
     static Tab playListTab = new Tab("Playlists");
     static Tab artistTab = new Tab("Artists");
     static Tab albumTab = new Tab("Albums");
@@ -106,7 +109,7 @@ public class MusicPlayer extends Application {
 
         JFXTabPane tabPane = new JFXTabPane();
         GridPane grid = new GridPane();
-        //PlayPauseWidget playMenu = new PlayPauseWidget();
+        PlayPauseWidget playMenu = new PlayPauseWidget();
         Tab[] tabs = new Tab[5];
         String tabName[] = {"Playlists","Artists","Albums","Songs","Genres"};
         BorderPane borderPane = new BorderPane();
@@ -124,6 +127,9 @@ public class MusicPlayer extends Application {
         sp.setFitToWidth(true);
         sp.setContent(albumArtWidget = new AlbumArtWidget());
         
+        sp2.setFitToWidth(true);
+        sp2.setContent(artistWidgetHolder = new ArtistWidgetHolder());
+        
         //create new tabs and put their widgets in them 
         for (int i = 0; i < 5; i++)
         {
@@ -137,7 +143,7 @@ public class MusicPlayer extends Application {
             {
                 case 0: playListTab.setContent(new PlayPauseWidget());
                         break;
-                case 1: artistTab.setContent(artistWidgetHolder = new ArtistWidgetHolder());
+                case 1: artistTab.setContent(sp2);
                         break;
                 case 2: albumTab.setContent(sp);
                         break;
@@ -153,7 +159,7 @@ public class MusicPlayer extends Application {
         }
         
         
-        tabPane.getTabs().addAll(playListTab,artistTab,albumTab,songTab,Genre);
+        tabPane.getTabs().addAll(songTab,albumTab,artistTab);
 
 
      
@@ -183,14 +189,14 @@ public class MusicPlayer extends Application {
                     
                     @Override
                     public void run()
-                            {
-
+                    {
+                        
                         try
                         {
-                            
-                            importMusic(list);
+                           importMusic(list);
+                           
                         } catch (Exception e) {
-                            System.out.print("Something went wrong");
+                            
                         }
 
                     }
@@ -203,14 +209,29 @@ public class MusicPlayer extends Application {
                     //th2.start();
                     
                     TimeUnit.SECONDS.sleep(2);
+                    
                     for(int i = 0; i < albumToMake.size(); i++){
+                        
                          try{
+                             
                              System.out.println("trying to make artWork for: " + albumToMake.get(i).getTitle());
                              albumArtWidget.addArtWork(albumToMake.get(i).art);
                              //playListTab.setContent(albumToMake.get(i).art);
                          }catch(IllegalStateException e){
                              System.out.print("Unable to make art");
                          }
+                    }
+                    
+                   
+                    
+                    for(int i = 0; i < artistToMake.size();i++){
+                        
+                        System.out.println(artistToMake.get(i).getName());
+                        
+                        artistToMake.get(i).setArt();
+                        artistWidgetHolder.addArtist(artistToMake.get(i).getArt());
+                        sp2.setContent(artistWidgetHolder);
+                        
                     }
                        
                     Alert alert 
@@ -512,7 +533,7 @@ public class MusicPlayer extends Application {
             //add artist to the artistWidgetHolder
             Library.artists.get(album.getArtist()).getArtistWidget().addSong(song);
             ArtistWidget artistWidget = Library.artists.get(album.getArtist()).getArtistWidget();
-            artistWidgetHolder.addArtist(artistWidget);
+            
             
             //make art work
             album.setArtWork();
@@ -533,14 +554,17 @@ public class MusicPlayer extends Application {
         
         if (Library.artists.containsKey(album.getArtist())){
                                 
-            Library.artists.get(album.getArtist()).addAlbums(album);
+            Library.artists.get(album.getArtist()).albums.add(album);
             
         } else {
            
             Artist artist = new Artist(album.getArtist());
+            
+            
             Library.artists.put(album.getArtist(),artist); 
-            artist.addAlbums(album);
+            artist.albums.add(album);
             artistToMake.add(artist);
+            
             System.out.println("New Artist " + album.getArtist());
             
         }
@@ -580,7 +604,7 @@ public class MusicPlayer extends Application {
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setVolume(playPause.volumeSlider.getValue() / 100.0);
         
-
+        
         String len = song.getDuration();
         Double length = Double.parseDouble(len);
         playPause.timeSlider.setMax(length);

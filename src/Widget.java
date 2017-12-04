@@ -35,7 +35,7 @@ import org.controlsfx.control.*;
 import org.controlsfx.control.cell.ColorGridCell;
 
 
-public class IndividualAlbumWidget extends GridPane{
+public class Widget extends GridPane{
 
     Label albumLabel = new Label("");
     Label artistLabel = new Label("");
@@ -47,7 +47,7 @@ public class IndividualAlbumWidget extends GridPane{
     ObservableList<String> items = FXCollections.observableArrayList();
     ObservableList<Song> songs = FXCollections.observableArrayList();
     
-    public IndividualAlbumWidget()
+    public Widget()
     {
 
         setPadding(new Insets (10,10,10,10));
@@ -85,7 +85,7 @@ public class IndividualAlbumWidget extends GridPane{
             public void handle(ActionEvent arg0)
             {
                 
-                MusicPlayer.albumTab.setContent(MusicPlayer.sp);
+                MusicPlayer.artistTab.setContent(MusicPlayer.sp2);
             }
                     
         });
@@ -95,12 +95,11 @@ public class IndividualAlbumWidget extends GridPane{
         public void addSong(Song song)
         {
 
-        albumText = new Text(song.getAlbum());
+        
         artistText = new Text(song.getArtist());
         
-        albumText.setFont(Font.font ("Verdana", 20));
-        add(albumText,2,0);
-        add(artistText,2,1);
+        artistText.setFont(Font.font ("Verdana", 20));
+        add(artistText,2,0);
         //System.out.println(String.format("%-80s%-30s%-20s", song.getTitle(),song.getArtist(),song.getAlbum()));
         songs.add(song);
         items.add(String.format("%-80s%-30s%-20s", song.getTitle(),song.getArtist(),song.getAlbum()));
